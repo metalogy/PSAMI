@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../_services/auth.service';
+import {Element} from "@angular/compiler";
+import {GoogleMap} from "@angular/google-maps";
 
 
 @Component({
@@ -7,7 +9,9 @@ import {AuthService} from '../_services/auth.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit {
+  @ViewChild('mapSearchField') searchField!: ElementRef;
+  @ViewChild(GoogleMap) map!: GoogleMap;
   form: any = {
     username: null,
     email: null,
@@ -22,6 +26,11 @@ export class RegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
   startDate = new Date(1990, 0, 1);
+
+  mapConfig = {
+    disableDefaultUI: true,
+    zoomControl: true
+  }
 
   constructor(private authService: AuthService) {
   }
@@ -42,5 +51,10 @@ export class RegisterComponent implements OnInit {
         this.isSignUpFailed = true;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    const searchBox = new google.maps.places.SearchBox(this.searchField.nativeElement,);
+    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.searchField.nativeElement,);
   }
 }

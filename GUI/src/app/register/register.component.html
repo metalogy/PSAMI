@@ -57,8 +57,22 @@
           </div>
         </div>
       </div>
+      <label for="dob">Date of birth</label>
       <div class="form-group">
-        <label for="firstName">First name</label>
+        <input [matDatepicker]="basicDatepicker">
+        <mat-datepicker-toggle [for]="basicDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #basicDatepicker></mat-datepicker>
+      </div>
+      <div class="form-group">
+        <label for="location" size="60%">Location</label>
+        <input #mapSearchField class="app-register-searchfield" type="text"/>
+        <google-map
+          width="100%"
+          [options]="mapConfig">
+        </google-map>
+      </div>
+      <div class="form-group">
+        <label for="firstName">First name (optional)</label>
         <input
           type="text"
           class="form-control"
@@ -68,7 +82,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="lastName">Last name</label>
+        <label for="lastName">Last name (optional)</label>
         <input
           type="text"
           class="form-control"
@@ -77,10 +91,10 @@
           #password="ngModel"
         />
       </div>
+
+      <label for="photo">Select profile photo (optional)</label>
       <div class="form-group">
-        <input [matDatepicker]="basicDatepicker">
-        <mat-datepicker-toggle [for]="basicDatepicker"></mat-datepicker-toggle>
-        <mat-datepicker #basicDatepicker></mat-datepicker>
+        <input type="file" class="file-upload" onchange="console.log(event.target.files)">
       </div>
 
 
