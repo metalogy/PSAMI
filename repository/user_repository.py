@@ -47,6 +47,18 @@ def update(db: Session, user_id: int, request: user_schema.UserUpdate):
         user.username = request.username
     if request.first_name:
         user.first_name = request.first_name
+    if request.last_name:
+        user.last_name = request.last_name
+    if request.email:
+        user.email = request.email
+    if request.password:
+        user.password = request.password
+    if request.age:
+        user.age = request.age
+    if request.city:
+        user.city = request.city
+    if request.avatar:
+        user.avatar = request.avatar
     db.commit()
     db.refresh(user)
     return user

@@ -14,3 +14,18 @@ get_db = database.get_db
 def create_event(request: event_schema.EventBase, db: Session = Depends(get_db),
                  mail: str = Depends(oauth2.get_current_user)):
     return event_repository.create_event(db, request, mail)
+
+
+@router.get("/{event_id}", status_code=status.HTTP_200_OK)
+def show_event(event_id: int, db: Session = Depends(get_db), mail: str = Depends(oauth2.get_current_user)):
+    return event_repository.show_event(event_id, db, mail)
+
+
+@router.put("/{event_id}", status_code=status.HTTP_200_OK)
+def update_event(event_id: int, request: event_schema.EventUpdate, db: Session = Depends(get_db),
+                 mail: str = Depends(oauth2.get_current_user)):
+    return event_repository.update(event_id, request, db, mail)
+
+@router.delete("/", status_code=status.HTTP_200_OK)
+def delete(event_id: int, db:Session = Depends(get_db), mail:str=Depends(oauth2.get_current_user)):
+    return event_repository.delete_event(db, event_id, mail)
