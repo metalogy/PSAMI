@@ -10,10 +10,11 @@
       <div class="form-group">
         <label for="username">Username</label>
         <input
+          id="username"
           type="text"
           class="form-control"
           name="username"
-          [(ngModel)]="form.username"
+          [(ngModel)]="userData.username"
           required
           #username="ngModel"
         />
@@ -21,13 +22,15 @@
           <div *ngIf="username.errors['required']">Username is required</div>
         </div>
       </div>
+
       <div class="form-group">
         <label for="email">Email</label>
         <input
+          id="email"
           type="email"
           class="form-control"
           name="email"
-          [(ngModel)]="form.email"
+          [(ngModel)]="userData.email"
           required
           email
           #email="ngModel"
@@ -39,13 +42,15 @@
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label for="password">Password</label>
         <input
+          id="password"
           type="password"
           class="form-control"
           name="password"
-          [(ngModel)]="form.password"
+          [(ngModel)]="userData.password"
           required
           minlength="6"
           #password="ngModel"
@@ -57,44 +62,69 @@
           </div>
         </div>
       </div>
-      <label for="dob">Date of birth</label>
+
       <div class="form-group">
-        <input [matDatepicker]="basicDatepicker">
-        <mat-datepicker-toggle [for]="basicDatepicker"></mat-datepicker-toggle>
-        <mat-datepicker #basicDatepicker></mat-datepicker>
+        <label for="dob">Date of birth</label>
+        <div id="dob" class="form-group">
+          <input matInput [(ngModel)]="dob" [matDatepicker]="datePicker" name="dob"/>
+          <mat-datepicker-toggle [for]="datePicker"></mat-datepicker-toggle>
+          <mat-datepicker #datePicker disabled="false"></mat-datepicker>
+        </div>
       </div>
+
       <div class="form-group">
         <label for="location" size="60%">Location</label>
-        <input #mapSearchField class="app-register-searchfield" type="text"/>
-        <google-map
-          width="100%"
-          [options]="mapConfig">
-        </google-map>
+        <div id="location">
+          <input
+            type="text"
+            class="map-searchbox"
+            (keydown.enter)="$event.preventDefault()"
+            placeholder="Search Location"
+            type="text"
+            #search
+          />
+
+          <google-map
+            #googleMap
+            height="500px"
+            width="100%"
+            [zoom]="zoom"
+            [center]="coords"
+            [options]="options"
+            (mapClick)="mapClick($event)">
+            <map-marker [position]="this.coords"></map-marker>
+          </google-map>
+        </div>
       </div>
+
       <div class="form-group">
         <label for="firstName">First name (optional)</label>
         <input
+          id="firstName"
           type="text"
           class="form-control"
           name="firstName"
-          [(ngModel)]="form.firstName"
+          [(ngModel)]="userData.firstName"
           #password="ngModel"
         />
       </div>
+
       <div class="form-group">
         <label for="lastName">Last name (optional)</label>
         <input
+          id="lastName"
           type="text"
           class="form-control"
           name="lastName"
-          [(ngModel)]="form.lastName"
+          [(ngModel)]="userData.lastName"
           #password="ngModel"
         />
       </div>
 
       <label for="photo">Select profile photo (optional)</label>
-      <div class="form-group">
-        <input type="file" class="file-upload" onchange="console.log(event.target.files)">
+      <div id="photo" class="form-group">
+        <input type="file" class="file-upload"
+               (change)="handleFileInput($event)">
       </div>
 
 
@@ -105,6 +135,7 @@
         Signup failed!<br/>{{ errorMessage }}
       </div>
     </form>
+
     <div class="alert alert-success" *ngIf="isSuccessful">
       Your registration is successful!
     </div>
