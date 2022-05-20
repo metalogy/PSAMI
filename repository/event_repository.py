@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -88,3 +90,9 @@ def delete_event(db: Session, event_id: int, mail: str):
     db.delete(event)
     db.commit()
     return f"Event with id {event_id} has been deleted"
+
+
+def search_event(db: Session, name: Optional[str] = None):
+    events = db.query(event_model.Event)
+    events = events.filter(event_model.Event.name.contains(name))
+    return events.all()

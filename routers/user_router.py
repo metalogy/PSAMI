@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import Depends, APIRouter, status
 from sqlalchemy.orm import Session
 
@@ -38,6 +40,7 @@ def write(user_id: int, opinion: str, db: Session = Depends(get_db)):
 def delete(user_id: int, db: Session = Depends(get_db)):
     return user_repository.delete(db, user_id)
 
-@router.get("/{username}/", status_code=status.HTTP_200_OK)
-def get_user(username: user_schema.UserBase = Depends(oauth2.get_current_user), db:Session = Depends(get_db)):
-    return user_repository.get_user(db, username)
+
+@router.get("/", status_code=status.HTTP_200_OK)
+def search(username: Optional[str] = None, email: Optional[str] = None, db: Session = Depends(get_db)):
+    return user_repository.search_user(db, username, email)

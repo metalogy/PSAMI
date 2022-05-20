@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 from sqlalchemy.orm import Session
 
@@ -105,11 +106,12 @@ def create_user(db: Session, request: user_schema.UserBase):
     return new_user
 
 
-def get_user(db: Session, username: str):
-    user = db.query(user_model.User).filter(user_model.User.username == username).first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with username {username} not found"
-        )
-    return user
+def search_user(db: Session,
+                username: Optional[str] = None,
+                email: Optional[str] = None):
+    users = db.query(user_model.User)
+    if username:
+        users = users.filter(user_model.User.username.contains(username))
+    if email:
+        users = users.filter(user_model.User.email.contains(email))
+    return users.all()
