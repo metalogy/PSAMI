@@ -18,5 +18,6 @@ class User(Base):
     city = Column(String)
     avatar = Column(String)
     opinions = Column(String)
-    events = relationship("Event", back_populates="owner")
 
+    events = relationship("Event", back_populates="owner")
+    user_comments = relationship("Profile_Comments", back_populates="profile_comments")

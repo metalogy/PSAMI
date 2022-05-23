@@ -12,6 +12,7 @@ get_db = database.get_db
 
 router = APIRouter(tags=["Authentication"])
 
+
 def get_user(request: OAuth2PasswordRequestForm = Depends(),
              db: Session = Depends(get_db)):
     user = db.query(user_model.User) \

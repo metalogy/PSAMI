@@ -23,11 +23,8 @@ class Event(Base):
     max_users = Column(Integer)
     suggested_age = Column(Integer)
     user_id = Column(Integer, ForeignKey("users.id"))
-    # users
-    # comments
     owner = relationship("User", back_populates="events")
+    event_comments = relationship("Event_Comments", back_populates="event_comments")
+
     created_at = Column(DateTime(timezone=True), default=datetime.now())
     updated_at = Column(DateTime(timezone=True), default=datetime.now(), onupdate=datetime.now())
-
-
-

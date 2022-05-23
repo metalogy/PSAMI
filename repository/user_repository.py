@@ -1,12 +1,13 @@
+import datetime
+import io
 import re
 
+from PIL import Image
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from authentication import hashing
 from models import user_model
-
-from fastapi import HTTPException, status
-
 from schemas import user_schema
 
 
@@ -64,14 +65,6 @@ def update(db: Session, user_id: int, request: user_schema.UserUpdate):
     return user
 
 
-def write_opinion(db: Session, opinion: str, user_id: int):
-    user = get_user_by_id(db, user_id)
-    user.opinions = opinion
-    db.commit()
-    db.refresh(user)
-    return user
-
-
 def delete(db: Session, user_id: int):
     user = get_user_by_id(db, user_id)
     db.delete(user)
@@ -99,6 +92,7 @@ def create_user(db: Session, request: user_schema.UserBase):
         avatar=request.avatar
 
     )
+
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -113,3 +107,29 @@ def get_user(db: Session, username: str):
             detail=f"User with username {username} not found"
         )
     return user
+
+
+def upload_picture(db: Session, file):
+    picture = file.file.read()
+    timestamp = datetime.datetime.now()
+    timestamp_to_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
+    full_path_picture = file.filename[:-4] + "_" + timestamp_to_str + ".png"
+
+    new_user = user_model.User(
+        username="string@gmail.com",
+        first_name="string@gmail.com",
+        last_name="string@gmail.com",
+        email="string@gmail.com",
+        password="string@gmail.com",
+        age=2,
+        city="string@gmail.com",
+        avatar="images\\" + full_path_picture
+
+    )
+    image = Image.open(io.BytesIO(picture))
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    image.save(f".\\images\\{full_path_picture}", format='png')
+
+    return "Picture to profile updated"

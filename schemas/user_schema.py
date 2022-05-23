@@ -10,8 +10,8 @@ class UserBase(BaseModel):
     email: str
     password: str
     age: int
-    city: str
     avatar: str
+    city: str
 
 
 class UserUpdate(UserBase):
@@ -22,7 +22,8 @@ class UserUpdate(UserBase):
     password: Optional[str] = None
     age: Optional[int] = None
     city: Optional[str] = None
-    avatar: Optional[str] = None
+
+    # avatar: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -31,12 +32,15 @@ class UserUpdate(UserBase):
 class UserBaseWithPassword(UserBase):
     password: str
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+
 class TokenData(BaseModel):
     email: Optional[str] = None
+
 
 class Login(BaseModel):
     username: str

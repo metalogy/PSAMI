@@ -29,15 +29,11 @@ def update(
     return user_repository.update(db, user_id, request)
 
 
-@router.post("/{user_id}/comment", status_code=status.HTTP_200_OK)
-def write(user_id: int, opinion: str, db: Session = Depends(get_db)):
-    return user_repository.write_opinion(db, opinion, user_id)
-
-
 @router.delete("/", status_code=status.HTTP_200_OK)
 def delete(user_id: int, db: Session = Depends(get_db)):
     return user_repository.delete(db, user_id)
 
+
 @router.get("/{username}/", status_code=status.HTTP_200_OK)
-def get_user(username: user_schema.UserBase = Depends(oauth2.get_current_user), db:Session = Depends(get_db)):
+def get_user(username: user_schema.UserBase = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
     return user_repository.get_user(db, username)

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, status, Depends
 from sqlalchemy.orm import Session
 
+import database
 from authentication import oauth2
 from repository import event_repository
-import database
 from schemas import event_schema
 
 router = APIRouter(prefix="/event", tags=["Event"])
@@ -26,6 +26,7 @@ def update_event(event_id: int, request: event_schema.EventUpdate, db: Session =
                  mail: str = Depends(oauth2.get_current_user)):
     return event_repository.update(event_id, request, db, mail)
 
+
 @router.delete("/", status_code=status.HTTP_200_OK)
-def delete(event_id: int, db:Session = Depends(get_db), mail:str=Depends(oauth2.get_current_user)):
+def delete(event_id: int, db: Session = Depends(get_db), mail: str = Depends(oauth2.get_current_user)):
     return event_repository.delete_event(db, event_id, mail)

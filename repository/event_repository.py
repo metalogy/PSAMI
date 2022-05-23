@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from models import event_model
-from repository.user_repository import get_current_user, get_user_by_id
+from repository.user_repository import get_current_user
 from schemas import event_schema
 
 
