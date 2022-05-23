@@ -148,4 +148,4 @@ def update_profile_picture(db: Session, file, mail):
     db.commit()
     db.refresh(user)
 
-    return "Picture to profile updated"
+    return user

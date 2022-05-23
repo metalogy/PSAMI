@@ -12,7 +12,6 @@ class UserBase(BaseModel):
     password: str
     age: int
     city: str
-    profile_picture: Optional[str] = None
 
 
 class UserUpdate(UserBase):

@@ -41,10 +41,13 @@ def write(user_id: int, opinion: str, db: Session = Depends(get_db)):
 def delete(user_id: int, db: Session = Depends(get_db)):
     return user_repository.delete(db, user_id)
 
+
 @router.get("/{username}/", status_code=status.HTTP_200_OK)
-def get_user(username: user_schema.UserBase = Depends(oauth2.get_current_user), db:Session = Depends(get_db)):
+def get_user(username: user_schema.UserBase = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
     return user_repository.get_user(db, username)
 
+
 @router.post("/uploadfile/")
-def update_profile_picture(file: UploadFile, db: Session = Depends(get_db), mail: str = Depends(oauth2.get_current_user)):
+def update_profile_picture(file: UploadFile, db: Session = Depends(get_db),
+                           mail: str = Depends(oauth2.get_current_user)):
     return user_repository.update_profile_picture(db, file, mail)

@@ -8,7 +8,6 @@ class EventBase(BaseModel):
     name: str
     description: str
     date: datetime.datetime
-    pictures: str
     status: str
     localization: str
     is_private: bool
@@ -34,7 +33,6 @@ class EventUpdate(EventBase):
     name: Optional[str] = None
     description: Optional[str] = None
     date: Optional[datetime.datetime] = None
-    pictures: Optional[str] = None
     status: Optional[str] = None
     localization: Optional[str] = None
     is_private: Optional[bool] = None

@@ -1,4 +1,7 @@
-from fastapi import APIRouter, status, Depends
+import datetime
+from typing import Optional
+
+from fastapi import APIRouter, status, Depends, UploadFile, File
 from sqlalchemy.orm import Session
 
 from authentication import oauth2
@@ -11,9 +14,13 @@ get_db = database.get_db
 
 
 @router.post("/", status_code=status.HTTP_200_OK)
-def create_event(request: event_schema.EventBase, db: Session = Depends(get_db),
+def create_event(name: str, description: str, date: datetime.datetime, status: str, localization: str, is_private: bool,
+                 is_reserved: bool, min_users: int, max_users: int, suggested_age: int,
+                 file: Optional[UploadFile] = File(None),
+                 db: Session = Depends(get_db),
                  mail: str = Depends(oauth2.get_current_user)):
-    return event_repository.create_event(db, request, mail)
+    return event_repository.create_event(db, name, description, date, status, localization, is_private, is_reserved,
+                                         min_users, max_users, suggested_age, mail, file)
 
 
 @router.get("/{event_id}", status_code=status.HTTP_200_OK)
@@ -26,6 +33,12 @@ def update_event(event_id: int, request: event_schema.EventUpdate, db: Session =
                  mail: str = Depends(oauth2.get_current_user)):
     return event_repository.update(event_id, request, db, mail)
 
+
 @router.delete("/", status_code=status.HTTP_200_OK)
-def delete(event_id: int, db:Session = Depends(get_db), mail:str=Depends(oauth2.get_current_user)):
+def delete(event_id: int, db: Session = Depends(get_db), mail: str = Depends(oauth2.get_current_user)):
     return event_repository.delete_event(db, event_id, mail)
+
+@router.post("/uploadfile/")
+def update_event_picture(event_id: int,file: UploadFile, db: Session = Depends(get_db),
+                           mail: str = Depends(oauth2.get_current_user)):
+    return event_repository.update_event_picture(db, file, mail, event_id)
