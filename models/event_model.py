@@ -14,7 +14,7 @@ class Event(Base):
     name = Column(String)
     description = Column(String)
     date = Column(DateTime)
-    pictures = Column(String)
+    event_picture = Column(String)
     status = Column(String)
     localization = Column(String)
     is_private = Column(Boolean)
@@ -23,8 +23,6 @@ class Event(Base):
     max_users = Column(Integer)
     suggested_age = Column(Integer)
     user_id = Column(Integer, ForeignKey("users.id"))
-    # users
-    # comments
     owner = relationship("User", back_populates="events")
     created_at = Column(DateTime(timezone=True), default=datetime.now())
     updated_at = Column(DateTime(timezone=True), default=datetime.now(), onupdate=datetime.now())
