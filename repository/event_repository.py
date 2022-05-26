@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 
 from fastapi import HTTPException, status
@@ -92,7 +93,17 @@ def delete_event(db: Session, event_id: int, mail: str):
     return f"Event with id {event_id} has been deleted"
 
 
-def search_event(db: Session, name: Optional[str] = None):
+def search_event(db: Session, name: Optional[str] = None, date: Optional[datetime.datetime] = None):
     events = db.query(event_model.Event)
-    events = events.filter(event_model.Event.name.contains(name))
+    event = db.query(event_model.Event).filter(event_model.Event.id==1).first()
+    event_to_str = event.date.strftime("%Y-%m-%d")
+    print(event_to_str)
+    print(event.date)
+    print(type(event.date))
+    # porownac date ktora sie wpisuje tylko rok miesiac i dzien do tabeli tez tylko z rok miesiac dzien
+    if name:
+        events = events.filter(event_model.Event.name.contains(name))
+    if date:
+        events = events.filter(event_model.Event.date)
+    print(events.date.all())
     return events.all()

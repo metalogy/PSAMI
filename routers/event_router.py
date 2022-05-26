@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 
 from fastapi import APIRouter, status, Depends
@@ -35,5 +36,5 @@ def delete(event_id: int, db: Session = Depends(get_db), mail: str = Depends(oau
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-def search(name: Optional[str] = None, db: Session = Depends(get_db)):
-    return event_repository.search_event(db, name)
+def search(name: Optional[str] = None, date: Optional[datetime.datetime] = None, db: Session = Depends(get_db)):
+    return event_repository.search_event(db, name, date)
