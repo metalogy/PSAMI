@@ -95,15 +95,12 @@ def delete_event(db: Session, event_id: int, mail: str):
 
 def search_event(db: Session, name: Optional[str] = None, date: Optional[datetime.datetime] = None):
     events = db.query(event_model.Event)
-    event = db.query(event_model.Event).filter(event_model.Event.id==1).first()
-    event_to_str = event.date.strftime("%Y-%m-%d")
-    print(event_to_str)
-    print(event.date)
-    print(type(event.date))
-    # porownac date ktora sie wpisuje tylko rok miesiac i dzien do tabeli tez tylko z rok miesiac dzien
+
     if name:
         events = events.filter(event_model.Event.name.contains(name))
     if date:
-        events = events.filter(event_model.Event.date)
-    print(events.date.all())
+        date = date.strftime("%Y-%m-%d")
+        start_date = date + " 00:00:00.0"
+        end_date = date + " 23:59:59.99999"
+        events = events.filter(event_model.Event.date >= start_date, event_model.Event.date <= end_date)
     return events.all()
