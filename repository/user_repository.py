@@ -9,7 +9,6 @@ from fastapi import HTTPException, status
 
 from schemas import user_schema
 
-
 def validate_email_format(email):
     regex = """^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$"""
     if re.search(regex, email) is None:

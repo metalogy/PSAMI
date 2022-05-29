@@ -16,18 +16,19 @@ class Event(Base):
     date = Column(DateTime)
     pictures = Column(String)
     status = Column(String)
-    localization = Column(String)
+    city = Column(String)
+    address = Column(String)
     is_private = Column(Boolean)
     is_reserved = Column(Boolean)
     min_users = Column(Integer)
     max_users = Column(Integer)
     suggested_age = Column(Integer)
     user_id = Column(Integer, ForeignKey("users.id"))
-    # users
-    # comments
     owner = relationship("User", back_populates="events")
     created_at = Column(DateTime(timezone=True), default=datetime.now())
     updated_at = Column(DateTime(timezone=True), default=datetime.now(), onupdate=datetime.now())
+    longitude = Column(String)
+    latitude = Column(String)
 
 
 

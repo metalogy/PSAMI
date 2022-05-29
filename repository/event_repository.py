@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from geopy import Nominatim
 from sqlalchemy.orm import Session
 
 from models import event_model
@@ -8,19 +9,30 @@ from schemas import event_schema
 
 def create_event(db: Session, request: event_schema.EventBase, mail: str):
     user = get_current_user(db, mail)
+    geolocator = Nominatim(user_agent="Event app")
+    full_localization = request.address + " " + request.city
+    location = geolocator.geocode(full_localization)
+    if location is None:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Place with this localization does not exist!"
+        )
     new_event = event_model.Event(
         name=request.name,
         description=request.description,
         date=request.date,
         pictures=request.pictures,
         status=request.status,
-        localization=request.localization,
+        city=request.city,
+        address=request.address,
         is_private=request.is_private,
         is_reserved=request.is_reserved,
         min_users=request.min_users,
         max_users=request.max_users,
         suggested_age=request.suggested_age,
-        user_id=user.id
+        user_id=user.id,
+        latitude=location.latitude,
+        longitude=location.longitude
     )
     db.add(new_event)
     db.commit()
