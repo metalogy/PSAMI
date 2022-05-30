@@ -3,6 +3,11 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 const AUTH_API = 'http://localhost:8080/api/auth/';
+const USER_BACKEND = 'http://127.0.0.1:8000/user/';
+
+const headers = new HttpHeaders({
+  'Content-Type': 'application/json',
+});
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
@@ -21,21 +26,7 @@ export class AuthService {
     }, httpOptions);
   }
 
-  register(username: any, email: any, password: any, firstName: any, lastName: any,
-           dob: any, photo: any, coords: any) {
-
-    debugger;
-
-    const registerData = new FormData();
-    registerData.append("username", username);
-    registerData.append("email", email);
-    registerData.append("password", password);
-    registerData.append("firstName", firstName);
-    registerData.append("lastName", lastName);
-    registerData.append("coords", coords);
-    registerData.append("dob", username);
-    registerData.append("photo", photo);
-
-    return this.http.post(AUTH_API + 'signup', registerData);
+  register(userData: any) {
+    return this.http.post(USER_BACKEND, JSON.stringify(userData), {headers: headers});
   }
 }

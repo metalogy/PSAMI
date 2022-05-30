@@ -1,8 +1,8 @@
 //todo informacja o błędym wprowadzeniu daty
-//todo potwierdzenie hasła
 //todo formaty plików
 import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../_services/auth.service';
+import {Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-register',
@@ -28,18 +28,22 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   userData: any = {
     username: null,
+    first_name: null,
+    last_name: null,
     email: null,
     password: null,
-    firstName: null,
-    lastName: null,
+    age: "0",
+    city: "dupa", //todo adjust
+    //coords: null,
+    avatar: null
   };
 
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
 
-  dob: Date | undefined;
-  photo: File;
+  startDate = new Date(1990, 1, 1);
+  dob= this.startDate;
 
 
   constructor(private authService: AuthService, private ngZone: NgZone) {
@@ -87,12 +91,26 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   handleFileInput(event) {
-    this.photo = <File>event.target.files[0];
+    this.getBase64(event);
+  }
+
+  getBase64(event) {
+    let me = this;
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      me.userData.avatar = reader.result;
+      console.log(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 
   onSubmit(): void {
-    this.authService.register(this.userData.username, this.userData.email, this.userData.password, this.userData.firstName, this.userData.lastName,
-      this.dob.toDateString(), this.photo, this.coords).subscribe({
+    //this.userData.coords = this.coords;
+    this.authService.register(this.userData).subscribe({
       next: data => {
         console.log(data);
         this.isSuccessful = true;
