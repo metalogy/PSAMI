@@ -1,13 +1,28 @@
+<<<<<<< HEAD
 import datetime
 import io
 import re
 
 from PIL import Image
 from fastapi import HTTPException, status
+=======
+import io
+import re
+import datetime
+from typing import Union, Optional
+import imageio as iio
+from PIL import Image
+>>>>>>> origin/upload_images
 from sqlalchemy.orm import Session
 
 from authentication import hashing
 from models import user_model
+<<<<<<< HEAD
+=======
+
+from fastapi import HTTPException, status, UploadFile, File
+
+>>>>>>> origin/upload_images
 from schemas import user_schema
 
 
@@ -72,31 +87,42 @@ def delete(db: Session, user_id: int):
     return f"User with id {user_id} has been deleted"
 
 
-def create_user(db: Session, request: user_schema.UserBase):
+def create_user(db: Session, username: str, first_name: str, last_name: str, email: str, password: str, age: int,
+                city: str, file: Optional[UploadFile] = File(None)):
     user = db.query(user_model.User) \
-        .filter(user_model.User.email == request.email).first()
+        .filter(user_model.User.email == email).first()
     if user:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="User with this email already exists"
         )
-    validate_email_format(request.email)
-    new_user = user_model.User(
-        username=request.username,
-        first_name=request.first_name,
-        last_name=request.last_name,
-        email=request.email,
-        password=hashing.Hash.bcrypt(request.password),
-        age=request.age,
-        city=request.city,
-        avatar=request.avatar
+    validate_email_format(email)
 
+    full_path_picture = "profile_picture.png"
+
+    if file is not None:
+        profile_picture = file.file.read()
+        timestamp = datetime.datetime.now()
+        timestamp_to_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
+        full_path_picture = file.filename[:-4] + "_" + timestamp_to_str + ".png"
+        image = Image.open(io.BytesIO(profile_picture))
+        image.save(f".\\images\\{full_path_picture}", format='png')
+
+    new_user = user_model.User(
+        username=username,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        password=hashing.Hash.bcrypt(password),
+        age=age,
+        city=city,
+        profile_picture="images\\" + full_path_picture
     )
 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return new_user
+    return 'User has been created!'
 
 
 def get_user(db: Session, username: str):
@@ -109,11 +135,18 @@ def get_user(db: Session, username: str):
     return user
 
 
+<<<<<<< HEAD
 def upload_picture(db: Session, file):
+=======
+def update_profile_picture(db: Session, file, mail):
+    current_user = get_current_user(db, mail)
+
+>>>>>>> origin/upload_images
     picture = file.file.read()
     timestamp = datetime.datetime.now()
     timestamp_to_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
     full_path_picture = file.filename[:-4] + "_" + timestamp_to_str + ".png"
+<<<<<<< HEAD
 
     new_user = user_model.User(
         username="string@gmail.com",
@@ -133,3 +166,16 @@ def upload_picture(db: Session, file):
     image.save(f".\\images\\{full_path_picture}", format='png')
 
     return "Picture to profile updated"
+=======
+    user = db.query(user_model.User).filter(user_model.User.id == current_user.id).first()
+    image = Image.open(io.BytesIO(picture))
+    image.save(f".\\images\\{full_path_picture}", format='png')
+
+    user.profile_picture = "images\\" + full_path_picture
+
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return user
+>>>>>>> origin/upload_images

@@ -14,7 +14,7 @@ class Event(Base):
     name = Column(String)
     description = Column(String)
     date = Column(DateTime)
-    pictures = Column(String)
+    event_picture = Column(String)
     status = Column(String)
     localization = Column(String)
     is_private = Column(Boolean)

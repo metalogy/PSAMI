@@ -1,4 +1,6 @@
-from fastapi import Depends, APIRouter, status
+from typing import Optional
+
+from fastapi import Depends, APIRouter, status, UploadFile, File
 from sqlalchemy.orm import Session
 
 import database
@@ -16,8 +18,9 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_200_OK)
-def create_user(request: user_schema.UserBaseWithPassword, db: Session = Depends(get_db)):
-    return user_repository.create_user(db, request)
+def create_user(username: str, first_name: str, last_name: str, email: str, password: str, age: int, city: str,
+                file: Optional[UploadFile] = File(None), db: Session = Depends(get_db)):
+    return user_repository.create_user(db, username, first_name, last_name, email, password, age, city, file)
 
 
 @router.put("/{user_id}", status_code=status.HTTP_200_OK, response_model=user_schema.UserUpdate)
@@ -37,3 +40,9 @@ def delete(user_id: int, db: Session = Depends(get_db)):
 @router.get("/{username}/", status_code=status.HTTP_200_OK)
 def get_user(username: user_schema.UserBase = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
     return user_repository.get_user(db, username)
+
+
+@router.post("/uploadfile/")
+def update_profile_picture(file: UploadFile, db: Session = Depends(get_db),
+                           mail: str = Depends(oauth2.get_current_user)):
+    return user_repository.update_profile_picture(db, file, mail)
