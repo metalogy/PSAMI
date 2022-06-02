@@ -1,3 +1,4 @@
+from hashlib import new
 import io
 from threading import local
 from typing import Optional
@@ -191,3 +192,55 @@ def search_event(
             event_model.Event.date >= start_date, event_model.Event.date <= end_date
         )
     return events.all()
+
+
+def participate(db: Session, event_id: int, mail: str):
+    user = get_current_user(db, mail)
+    events = db.query(event_model.Event).filter(
+        event_model.Event.id == event_id).first()
+    if events:
+        participate = event_model.event_participants.insert().values(
+            event_id=event_id, user_id=user.id)
+        is_already_participating = db.query(event_model.event_participants).filter(
+            event_model.event_participants.c.event_id == event_id).filter(event_model.event_participants.c.user_id == user.id).first()
+        if is_already_participating:
+            raise HTTPException(
+                status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
+                detail="You have taken part in this event already!"
+            )
+
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Event with id {event_id} not found!"
+        )
+    db.execute(participate)
+    db.commit()
+    return "You take part in this event!"
+
+
+def delete_participate(db: Session, event_id: int, mail: str):
+    user = get_current_user(db, mail)
+    events = db.query(event_model.Event).filter(
+        event_model.Event.id == event_id).first()
+    if events:
+        is_already_participating = db.query(event_model.event_participants).filter(
+            event_model.event_participants.c.event_id == event_id).filter(event_model.event_participants.c.user_id == user.id).first()
+        statement = event_model.event_participants.delete().where(
+            event_model.event_participants.c.event_id == event_id,
+            event_model.event_participants.c.user_id == user.id,
+        )
+        if is_already_participating is not None:
+            db.execute(statement)
+            db.commit()
+            return "You have canceled a participation in event!"
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
+                detail=f"You don't participate in this event"
+            )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Event with id {event_id} not found!"
+        )
