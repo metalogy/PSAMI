@@ -29,11 +29,8 @@ class Event(Base):
 
     created_at = Column(DateTime(timezone=True), default=datetime.now())
     updated_at = Column(DateTime(timezone=True), default=datetime.now(), onupdate=datetime.now())
-<<<<<<< HEAD
-=======
     longitude = Column(String)
     latitude = Column(String)
 
 
 
->>>>>>> origin/adding_map

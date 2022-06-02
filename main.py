@@ -3,7 +3,13 @@ from fastapi import FastAPI, File
 
 from database import engine
 from models import user_model
-from routers import authentication_router, event_router, profile_comments_router, event_comments_router, user_router
+from routers import (
+    authentication_router,
+    event_router,
+    profile_comments_router,
+    event_comments_router,
+    user_router,
+)
 
 app = FastAPI()
 
@@ -13,14 +19,6 @@ app.include_router(user_router.router)
 app.include_router(event_router.router)
 app.include_router(profile_comments_router.router)
 app.include_router(event_comments_router.router)
-
-
-@app.post("/files")
-def UploadImage(file: bytes = File(...)):
-    with open('image.jpg', 'wb') as image:
-        image.write(file)
-        image.close()
-    return 'got it'
 
 
 if __name__ == "__main__":

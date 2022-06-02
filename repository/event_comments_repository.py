@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from models import event_comments_model
+from models import event_comments_model, event_model
 from repository.user_repository import get_current_user
 from schemas import event_comments_schema
 
@@ -16,6 +16,13 @@ def write_comment(db: Session, request: event_comments_model.Event_Comments, mai
         writer_id=user.id
 
     )
+    event = db.query(event_model.Event).filter(
+        event_model.Event.id == request.event_id).first()
+    if event is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Event with id {request.event_id} does not exist!"
+        )
     db.add(new_comment)
     db.commit()
     db.refresh(new_comment)

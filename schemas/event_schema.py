@@ -35,7 +35,8 @@ class EventUpdate(EventBase):
     description: Optional[str] = None
     date: Optional[datetime.datetime] = None
     status: Optional[str] = None
-    localization: Optional[str] = None
+    city: Optional[str] = None
+    address: Optional[str] = None
     is_private: Optional[bool] = None
     is_reserved: Optional[bool] = None
     min_users: Optional[int] = None

@@ -1,5 +1,5 @@
 from typing import Optional
-
+import datetime
 from fastapi import UploadFile, File
 from pydantic import BaseModel
 
@@ -20,7 +20,7 @@ class UserUpdate(UserBase):
     last_name: Optional[str] = None
     email: Optional[str] = None
     password: Optional[str] = None
-    age: Optional[int] = None
+    age: Optional[datetime.date] = None
     city: Optional[str] = None
 
     class Config:
