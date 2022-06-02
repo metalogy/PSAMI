@@ -16,13 +16,8 @@ class User(Base):
     password = Column(String)
     age = Column(Integer)
     city = Column(String)
-<<<<<<< HEAD
-    avatar = Column(String)
-    opinions = Column(String)
-=======
     profile_picture = Column(String)
     events = relationship("Event", back_populates="owner")
->>>>>>> origin/upload_images
 
     events = relationship("Event", back_populates="owner")
     user_comments = relationship("Profile_Comments", back_populates="profile_comments")

@@ -1,28 +1,16 @@
-<<<<<<< HEAD
-import datetime
-import io
-import re
-
-from PIL import Image
-from fastapi import HTTPException, status
-=======
 import io
 import re
 import datetime
 from typing import Union, Optional
 import imageio as iio
 from PIL import Image
->>>>>>> origin/upload_images
 from sqlalchemy.orm import Session
 
 from authentication import hashing
 from models import user_model
-<<<<<<< HEAD
-=======
 
 from fastapi import HTTPException, status, UploadFile, File
 
->>>>>>> origin/upload_images
 from schemas import user_schema
 
 
@@ -135,38 +123,13 @@ def get_user(db: Session, username: str):
     return user
 
 
-<<<<<<< HEAD
-def upload_picture(db: Session, file):
-=======
 def update_profile_picture(db: Session, file, mail):
     current_user = get_current_user(db, mail)
 
->>>>>>> origin/upload_images
     picture = file.file.read()
     timestamp = datetime.datetime.now()
     timestamp_to_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
     full_path_picture = file.filename[:-4] + "_" + timestamp_to_str + ".png"
-<<<<<<< HEAD
-
-    new_user = user_model.User(
-        username="string@gmail.com",
-        first_name="string@gmail.com",
-        last_name="string@gmail.com",
-        email="string@gmail.com",
-        password="string@gmail.com",
-        age=2,
-        city="string@gmail.com",
-        avatar="images\\" + full_path_picture
-
-    )
-    image = Image.open(io.BytesIO(picture))
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    image.save(f".\\images\\{full_path_picture}", format='png')
-
-    return "Picture to profile updated"
-=======
     user = db.query(user_model.User).filter(user_model.User.id == current_user.id).first()
     image = Image.open(io.BytesIO(picture))
     image.save(f".\\images\\{full_path_picture}", format='png')
@@ -178,4 +141,3 @@ def update_profile_picture(db: Session, file, mail):
     db.refresh(user)
 
     return user
->>>>>>> origin/upload_images

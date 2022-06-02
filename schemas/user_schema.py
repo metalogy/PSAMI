@@ -11,10 +11,6 @@ class UserBase(BaseModel):
     email: str
     password: str
     age: int
-<<<<<<< HEAD
-    avatar: str
-=======
->>>>>>> origin/upload_images
     city: str
 
 
@@ -26,11 +22,6 @@ class UserUpdate(UserBase):
     password: Optional[str] = None
     age: Optional[int] = None
     city: Optional[str] = None
-<<<<<<< HEAD
-
-    # avatar: Optional[str] = None
-=======
->>>>>>> origin/upload_images
 
     class Config:
         orm_mode = True
