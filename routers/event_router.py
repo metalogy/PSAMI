@@ -42,3 +42,7 @@ def delete(event_id: int, db: Session = Depends(get_db), mail: str = Depends(oau
 def update_event_picture(event_id: int,file: UploadFile, db: Session = Depends(get_db),
                            mail: str = Depends(oauth2.get_current_user)):
     return event_repository.update_event_picture(db, file, mail, event_id)
+
+@router.get("/", status_code=status.HTTP_200_OK)
+def search(name: Optional[str] = None, date: Optional[datetime.datetime] = None, db: Session = Depends(get_db)):
+    return event_repository.search_event(db, name, date)

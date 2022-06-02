@@ -46,3 +46,6 @@ def get_user(username: user_schema.UserBase = Depends(oauth2.get_current_user), 
 def update_profile_picture(file: UploadFile, db: Session = Depends(get_db),
                            mail: str = Depends(oauth2.get_current_user)):
     return user_repository.update_profile_picture(db, file, mail)
+@router.get("/", status_code=status.HTTP_200_OK)
+def search(username: Optional[str] = None, email: Optional[str] = None, db: Session = Depends(get_db)):
+    return user_repository.search_user(db, username, email)

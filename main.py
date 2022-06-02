@@ -3,7 +3,7 @@ from fastapi import FastAPI, File
 
 from database import engine
 from models import user_model
-from routers import user_router, authentication_router, event_router, profile_comments_router, event_comments_router
+from routers import authentication_router, event_router, profile_comments_router, event_comments_router, user_router
 
 app = FastAPI()
 

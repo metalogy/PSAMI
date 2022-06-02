@@ -4,6 +4,8 @@ import datetime
 from typing import Union, Optional
 import imageio as iio
 from PIL import Image
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
 from authentication import hashing
@@ -141,3 +143,12 @@ def update_profile_picture(db: Session, file, mail):
     db.refresh(user)
 
     return user
+def search_user(db: Session,
+                username: Optional[str] = None,
+                email: Optional[str] = None):
+    users = db.query(user_model.User)
+    if username:
+        users = users.filter(user_model.User.username.contains(username))
+    if email:
+        users = users.filter(user_model.User.email.contains(email))
+    return users.all()

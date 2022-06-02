@@ -1,5 +1,10 @@
 import io
 from typing import Optional
+import datetime
+from typing import Optional
+
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 from PIL import Image
 from fastapi import HTTPException, status, UploadFile, File
@@ -126,3 +131,14 @@ def update_event_picture(db: Session, file, mail: str, event_id: int):
     db.refresh(event)
 
     return event
+def search_event(db: Session, name: Optional[str] = None, date: Optional[datetime.datetime] = None):
+    events = db.query(event_model.Event)
+
+    if name:
+        events = events.filter(event_model.Event.name.contains(name))
+    if date:
+        date = date.strftime("%Y-%m-%d")
+        start_date = date + " 00:00:00.0"
+        end_date = date + " 23:59:59.99999"
+        events = events.filter(event_model.Event.date >= start_date, event_model.Event.date <= end_date)
+    return events.all()
