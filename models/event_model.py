@@ -16,7 +16,8 @@ class Event(Base):
     date = Column(DateTime)
     event_picture = Column(String)
     status = Column(String)
-    localization = Column(String)
+    city = Column(String)
+    address = Column(String)
     is_private = Column(Boolean)
     is_reserved = Column(Boolean)
     min_users = Column(Integer)
@@ -28,3 +29,11 @@ class Event(Base):
 
     created_at = Column(DateTime(timezone=True), default=datetime.now())
     updated_at = Column(DateTime(timezone=True), default=datetime.now(), onupdate=datetime.now())
+<<<<<<< HEAD
+=======
+    longitude = Column(String)
+    latitude = Column(String)
+
+
+
+>>>>>>> origin/adding_map

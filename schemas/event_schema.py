@@ -9,7 +9,8 @@ class EventBase(BaseModel):
     description: str
     date: datetime.datetime
     status: str
-    localization: str
+    city: str
+    address: str
     is_private: bool
     is_reserved: bool
     min_users: int
