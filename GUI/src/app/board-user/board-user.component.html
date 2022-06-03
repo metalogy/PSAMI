@@ -1,1 +1,47 @@
-<p>board-user works!</p>
+<div class="container">
+
+  <div class="row">
+    <p class="username">{{userData.username}}</p>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div *ngIf="userData.firstName">
+          {{userData.firstName}} {{userData.lastName}}
+        </div>
+      </div>
+
+      <div class="row">
+        {{userData.email}}
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Date of birth</mat-label>
+          <input [disabled]="true" matInput [matDatepicker]="picker1" [formControl]="userData.dob">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col" style="float: right">
+      <img class="img" src="../../assets/photo.png">
+    </div>
+  </div>
+
+
+  <div>
+    <label class="location-label">User location: </label>
+    <google-map
+      #googleMap
+      height="500px"
+      width="100%"
+      [zoom]="zoom"
+      [center]="userData.coords"
+      [options]="options">
+      <map-marker [position]="userData.coords"></map-marker>
+    </google-map>
+  </div>
+</div>

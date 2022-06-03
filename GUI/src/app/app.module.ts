@@ -31,18 +31,19 @@ import { GoogleMapsModule } from '@angular/google-maps'
     BoardModeratorComponent,
     BoardUserComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatNativeDateModule,
-    MatInputModule,
-    BrowserAnimationsModule,
-    GoogleMapsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatNativeDateModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        GoogleMapsModule,
+        ReactiveFormsModule
+    ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
     authInterceptorProviders
