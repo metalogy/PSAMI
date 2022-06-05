@@ -96,7 +96,7 @@ def search(
     return event_repository.search_event(db, name, date)
 
 
-@router.post("/participate", status_code=status.HTTP_200_OK)
+@router.post("/participate/", status_code=status.HTTP_200_OK)
 def participate(
     event_id: int,
     db: Session = Depends(get_db),
@@ -105,10 +105,19 @@ def participate(
     return event_repository.participate(db, event_id, mail)
 
 
-@router.delete("/not_participate", status_code=status.HTTP_200_OK)
+@router.delete("/not_participate/", status_code=status.HTTP_200_OK)
 def not_participate(
     event_id: int,
     db: Session = Depends(get_db),
     mail: str = Depends(oauth2.get_current_user),
 ):
     return event_repository.delete_participate(db, event_id, mail)
+
+
+@router.get("/participants/", status_code=status.HTTP_200_OK)
+def show_participants(
+    event_id: int,
+    db: Session = Depends(get_db),
+    mail: str = Depends(oauth2.get_current_user),
+):
+    return event_repository.show_participants(db, event_id, mail)

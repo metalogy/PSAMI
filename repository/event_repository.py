@@ -1,5 +1,7 @@
 from hashlib import new
 import io
+from operator import ge
+import re
 from threading import local
 from typing import Optional
 import datetime
@@ -14,7 +16,7 @@ from PIL import Image
 from fastapi import HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
 import datetime
-from models import event_model
+from models import event_model, user_model
 from repository.user_repository import get_current_user
 from schemas import event_schema
 
@@ -244,3 +246,10 @@ def delete_participate(db: Session, event_id: int, mail: str):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Event with id {event_id} not found!"
         )
+
+
+def show_participants(db: Session, event_id: int, mail: str):
+    user = get_current_user(db, mail)
+    events = db.query(user_model.User).join(event_model.event_participants).filter(
+        event_model.event_participants.c.event_id == event_id).all()
+    return events
