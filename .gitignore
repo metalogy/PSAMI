@@ -3,3 +3,7 @@
 env/
 venv/
 /venv/
+build/
+dist/
+*.pyc
+*.pyo
