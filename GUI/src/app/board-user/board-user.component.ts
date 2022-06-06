@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
+import {UserComment} from "./user-comment";
 
 @Component({
   selector: 'app-board-user',
@@ -27,6 +28,12 @@ export class BoardUserComponent implements OnInit {
     coords: null,
     photo: " null",
   };
+
+  xd1 = new UserComment("papaj", "dupa komentarz", new Date(2022, 5, 7));
+  xd2 = new UserComment("nie papaj", "nic nie pisalem", new Date(2022, 5, 12));
+
+   userComments = [this.xd1, this.xd2]
+   //userComments = ["xd 2", "dupa"]
 
   constructor() {
   }

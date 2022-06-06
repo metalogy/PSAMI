@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
 
   <div class="row">
     <p class="username">{{userData.username}}</p>
@@ -33,7 +33,7 @@
 
 
   <div>
-    <label class="location-label">User location: </label>
+    <h2>User location:</h2> 
     <google-map
       #googleMap
       height="500px"
@@ -43,5 +43,42 @@
       [options]="options">
       <map-marker [position]="userData.coords"></map-marker>
     </google-map>
+  </div>
+
+  <hr/>
+
+  <div class="form-group">
+    <form ng-controller="Controller">
+
+      <h2>Comments</h2>
+      <ul class="list-group">
+        <div *ngIf="userComments">
+
+        </div>
+        <div>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let comment of userComments">
+              <div class="row" style="float: right; font-size: 12px; margin:0px">
+                {{comment.date.toDateString()}}
+              </div>
+              <div class="row" style="font-size: 14px; margin-top:10px; margin-bottom:10px">
+                {{ comment.comment }}
+              </div>
+              <div class="row" style="float: right;  margin:0px">
+                <i>by <b>{{comment.user}}</b></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </ul>
+
+      <br/>
+      <hr/>
+
+      <h2>Leave a comment</h2>
+      <textarea class="form-control" rows="5" ng-model="cmtName" placeholder="Your Comment"></textarea>
+      <br/>
+      <button class="btn btn-success btn-md pull-right" ng-click='btn_post();'>Add comment</button>
+    </form>
   </div>
 </div>
