@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../_services/auth.service';
 import {TokenStorageService} from '../_services/token-storage.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -8,35 +9,32 @@ import {TokenStorageService} from '../_services/token-storage.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  form: any = {
+  credentials: any = {
     email: null,
     password: null
   };
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) {
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) {
   }
 
   ngOnInit(): void {
     debugger;
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.roles = this.tokenStorage.getUser().roles;
     }
   }
 
   onSubmit(): void {
-    this.authService.login(this.form.email, this.form.password).subscribe({
+    this.authService.login(this.credentials.email, this.credentials.password).subscribe({
       next: data => {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        this.redirectHome()
       },
       error: err => {
         this.errorMessage = err.error.message;
@@ -45,7 +43,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  reloadPage(): void {
-    window.location.reload();
+  redirectHome() {
+    setTimeout(() => {
+      setTimeout(() => {
+        this.router.navigateByUrl("/home");
+      });
+    }, 1000);
   }
 }

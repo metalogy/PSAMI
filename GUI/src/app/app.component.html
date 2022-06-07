@@ -5,14 +5,14 @@
       <li class="nav-item">
         <a href="/home" class="nav-link" routerLink="home">Home </a>
       </li>
-      <li class="nav-item" *ngIf="showAdminBoard">
-        <a href="/admin" class="nav-link" routerLink="admin">Admin Board</a>
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a href="/events" class="nav-link" routerLink="admin">Browse events</a>
       </li>
-      <li class="nav-item" *ngIf="showModeratorBoard">
-        <a href="/mod" class="nav-link" routerLink="mod">Moderator Board</a>
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a href="/create-event" class="nav-link" routerLink="mod">Add event</a>
       </li>
-      <li class="nav-item">
-        <a href="/user" class="nav-link" *ngIf="isLoggedIn" routerLink="user">User</a>
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a href="/create-event" class="nav-link" routerLink="mod">My events</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
@@ -25,10 +25,10 @@
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
       <li class="nav-item">
-        <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+        <a href="/user" class="nav-link" routerLink="profile">TODO USERNAME</a>
       </li>
       <li class="nav-item">
-        <a href class="nav-link" (click)="logout()">LogOut</a>
+        <a href class="nav-link" (click)="logout()">Log out</a>
       </li>
     </ul>
   </nav>
