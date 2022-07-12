@@ -64,13 +64,62 @@
       </div>
 
       <div class="form-group">
-        <label for="dob">Date of birth</label>
-        <div id="dob" class="form-group">
-          <input matInput [(ngModel)]="dob" [matDatepicker]="datePicker" name="dob"/>
-          <mat-datepicker-toggle [for]="datePicker"></mat-datepicker-toggle>
-          <mat-datepicker #datePicker disabled="false"></mat-datepicker>
+        <label for="firstName">First name</label>
+        <input
+          id="firstName"
+          type="text"
+          class="form-control"
+          name="firstName"
+          [(ngModel)]="userData.first_name"
+          required
+          #firstName="ngModel"
+        />
+        <div class="alert-danger" *ngIf="firstName.errors && f.submitted">
+          <div *ngIf="firstName.errors['required']">First name is required</div>
         </div>
       </div>
+
+      <div class="form-group">
+        <label for="lastName">Last name</label>
+        <input
+          id="lastName"
+          type="text"
+          class="form-control"
+          name="lastName"
+          [(ngModel)]="userData.last_name"
+          required
+          #lastName="ngModel"
+        />
+        <div class="alert-danger" *ngIf="lastName.errors && f.submitted">
+          <div *ngIf="lastName.errors['required']">Last name is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input
+          id="age"
+          type="text"
+          class="form-control"
+          name="age"
+          [(ngModel)]="userData.age"
+          required
+          #age="ngModel"
+        />
+        <div class="alert-danger" *ngIf="age.errors && f.submitted">
+          <div *ngIf="age.errors['required']">Age is required</div>
+        </div>
+      </div>
+
+      <!--todo-->
+      <!--      <div class="form-group">-->
+      <!--        <label for="dob">Date of birth</label>-->
+      <!--        <div id="dob" class="form-group">-->
+      <!--          <input matInput [(ngModel)]="dob" [matDatepicker]="datePicker" placeholder="1/1/1990" name="dob"/>-->
+      <!--          <mat-datepicker-toggle [for]="datePicker"></mat-datepicker-toggle>-->
+      <!--          <mat-datepicker #datePicker disabled="false" [startAt]="startDate"></mat-datepicker>-->
+      <!--        </div>-->
+      <!--      </div>-->
 
       <div class="form-group">
         <label for="location" size="60%">Location</label>
@@ -97,36 +146,15 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="firstName">First name (optional)</label>
-        <input
-          id="firstName"
-          type="text"
-          class="form-control"
-          name="firstName"
-          [(ngModel)]="userData.firstName"
-          #password="ngModel"
-        />
-      </div>
 
-      <div class="form-group">
-        <label for="lastName">Last name (optional)</label>
-        <input
-          id="lastName"
-          type="text"
-          class="form-control"
-          name="lastName"
-          [(ngModel)]="userData.lastName"
-          #password="ngModel"
-        />
-      </div>
-
-      <label for="photo">Select profile photo (optional)</label>
-      <div id="photo" class="form-group">
+      <label for="avatar">Select profile avatar</label>
+      <div id="avatar" class="form-group">
         <input type="file" class="file-upload"
                (change)="handleFileInput($event)">
       </div>
-
+      <div class="alert-danger" *ngIf="userData.avatar===null && f.submitted">
+        <div *ngIf="userData.avatar===null">Avatar is required</div>
+      </div>
 
       <div class="form-group">
         <button class="btn btn-primary btn-block">Sign Up</button>
