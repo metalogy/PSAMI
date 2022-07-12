@@ -32,8 +32,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     last_name: null,
     email: null,
     password: null,
-    age: "0",
-    city: "dupa", //todo adjust
+    age: null, //todo adjust
+    city: "testCity", //todo adjust
     //coords: null,
     avatar: null
   };
@@ -42,8 +42,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   isSignUpFailed = false;
   errorMessage = '';
 
-  startDate = new Date(1990, 1, 1);
-  dob= this.startDate;
+  // startDate = new Date(1990, 1, 1); //todo
+  // dob= this.startDate;
 
 
   constructor(private authService: AuthService, private ngZone: NgZone) {
