@@ -19,11 +19,14 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'signin', {
-      username,
-      password
-    }, httpOptions);
+  login(email: string, password: string): Observable<any> {
+
+    let body = new URLSearchParams();
+    body.set('username', email);
+    body.set('password', password);
+
+    return this.http.post(AUTH_API + 'login', body.toString(), httpOptionsLogin);
+
   }
 
   register(userData: any) {

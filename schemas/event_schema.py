@@ -8,9 +8,9 @@ class EventBase(BaseModel):
     name: str
     description: str
     date: datetime.datetime
-    pictures: str
     status: str
-    localization: str
+    city: str
+    address: str
     is_private: bool
     is_reserved: bool
     min_users: int
@@ -34,9 +34,9 @@ class EventUpdate(EventBase):
     name: Optional[str] = None
     description: Optional[str] = None
     date: Optional[datetime.datetime] = None
-    pictures: Optional[str] = None
     status: Optional[str] = None
-    localization: Optional[str] = None
+    city: Optional[str] = None
+    address: Optional[str] = None
     is_private: Optional[bool] = None
     is_reserved: Optional[bool] = None
     min_users: Optional[int] = None

@@ -1,5 +1,6 @@
 from typing import Optional
-
+import datetime
+from fastapi import UploadFile, File
 from pydantic import BaseModel
 
 
@@ -11,7 +12,6 @@ class UserBase(BaseModel):
     password: str
     age: int
     city: str
-    avatar: str
 
 
 class UserUpdate(UserBase):
@@ -20,9 +20,8 @@ class UserUpdate(UserBase):
     last_name: Optional[str] = None
     email: Optional[str] = None
     password: Optional[str] = None
-    age: Optional[int] = None
+    age: Optional[datetime.date] = None
     city: Optional[str] = None
-    avatar: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -31,12 +30,15 @@ class UserUpdate(UserBase):
 class UserBaseWithPassword(UserBase):
     password: str
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+
 class TokenData(BaseModel):
     email: Optional[str] = None
+
 
 class Login(BaseModel):
     username: str
