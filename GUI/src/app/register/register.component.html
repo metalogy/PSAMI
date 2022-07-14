@@ -96,30 +96,18 @@
       </div>
 
       <div class="form-group">
-        <label for="age">Age</label>
-        <input
-          id="age"
-          type="text"
-          class="form-control"
-          name="age"
-          [(ngModel)]="userData.age"
-          required
-          #age="ngModel"
-        />
-        <div class="alert-danger" *ngIf="age.errors && f.submitted">
-          <div *ngIf="age.errors['required']">Age is required</div>
+        <label for="dob">Date of birth</label>
+        <div id="dob" class="form-group">
+          <input matInput [(ngModel)]="userData.age" [matDatepicker]="datePicker" placeholder="1990-01-01" name="dob"
+                 required #dob="ngModel"/>
+          <mat-datepicker-toggle [for]="datePicker"></mat-datepicker-toggle>
+          <mat-datepicker #datePicker disabled="false" [startAt]="startDate"></mat-datepicker>
         </div>
       </div>
+      <div class="alert-danger" *ngIf="dob.errors && f.submitted">
+        <div *ngIf="dob.errors['required']">Date of birth is required</div>
+      </div>
 
-      <!--todo-->
-      <!--      <div class="form-group">-->
-      <!--        <label for="dob">Date of birth</label>-->
-      <!--        <div id="dob" class="form-group">-->
-      <!--          <input matInput [(ngModel)]="dob" [matDatepicker]="datePicker" placeholder="1/1/1990" name="dob"/>-->
-      <!--          <mat-datepicker-toggle [for]="datePicker"></mat-datepicker-toggle>-->
-      <!--          <mat-datepicker #datePicker disabled="false" [startAt]="startDate"></mat-datepicker>-->
-      <!--        </div>-->
-      <!--      </div>-->
 
       <div class="form-group">
         <label for="location" size="60%">Location</label>
@@ -146,14 +134,10 @@
         </div>
       </div>
 
-
-      <label for="avatar">Select profile avatar</label>
+      <label for="avatar">Select profile avatar (optional)</label>
       <div id="avatar" class="form-group">
         <input type="file" class="file-upload"
                (change)="handleFileInput($event)">
-      </div>
-      <div class="alert-danger" *ngIf="userData.avatar===null && f.submitted">
-        <div *ngIf="userData.avatar===null">Avatar is required</div>
       </div>
 
       <div class="form-group">

@@ -2,7 +2,6 @@
 //todo formaty plików
 import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../_services/auth.service';
-import {Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-register',
@@ -32,7 +31,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     last_name: null,
     email: null,
     password: null,
-    age: null, //todo adjust
+    age: null,
     city: "testCity", //todo adjust
     //coords: null,
     avatar: null
@@ -42,8 +41,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   isSignUpFailed = false;
   errorMessage = '';
 
-  // startDate = new Date(1990, 1, 1); //todo
-  // dob= this.startDate;
+  startDate = new Date(1990, 1, 1); //todo
 
 
   constructor(private authService: AuthService, private ngZone: NgZone) {

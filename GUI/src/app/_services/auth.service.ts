@@ -25,11 +25,25 @@ export class AuthService {
     body.set('username', email);
     body.set('password', password);
 
-    return this.http.post(AUTH_API + 'login', body.toString(), httpOptionsLogin);
-
+    return this.http.post(AUTH_API + 'login', body.toString(), httpOptions);
   }
 
   register(userData: any) {
-    return this.http.post(USER_BACKEND, JSON.stringify(userData), {headers: headers});
+    debugger;
+    return this.http.post(USER_BACKEND, userData.avatar,
+      {
+        params:
+          {
+            username: userData.username,
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            email: userData.email,
+            password: userData.password,
+            age: userData.age.toISOString().split('T')[0],
+            city: userData.city
+          },
+        headers: headers
+      }
+    );
   }
 }
