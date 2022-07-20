@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
     email: null,
     password: null
   };
-  isLoggedIn = false;
+
   isLoginFailed = false;
   errorMessage = '';
 
@@ -21,19 +21,20 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger;
-    if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
-    }
   }
 
   onSubmit(): void {
     this.authService.login(this.credentials.email, this.credentials.password).subscribe({
       next: data => {
-        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveToken(data.access_token);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
-        this.isLoggedIn = true;
+
+        this.authService.getLoggedUserData().subscribe({
+          next: userData => {
+            this.tokenStorage.saveUserData(userData);
+          }
+        })
         this.redirectHome()
       },
       error: err => {

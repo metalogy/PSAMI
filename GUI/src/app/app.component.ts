@@ -8,22 +8,32 @@ import {TokenStorageService} from './_services/token-storage.service';
 })
 export class AppComponent {
   isLoggedIn = false;
-
-  //username?: string; todo
+  username = null;
+  userId = null;
 
   constructor(private tokenStorageService: TokenStorageService) {
+    tokenStorageService.isLogged.subscribe(val => {
+      this.isLoggedIn = val;
+    });
+
+    tokenStorageService.userId.subscribe(userId => {
+      this.userId = userId;
+    });
+
+    tokenStorageService.username.subscribe(username => {
+      this.username = username;
+    });
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
-    if (this.isLoggedIn) {
-      const user = this.tokenStorageService.getUser();
-      //todo zapisz dane o zalogowanym userze
-    }
   }
 
   logout(): void {
     this.tokenStorageService.signOut();
     window.location.reload();
+  }
+
+  getUserId(): number {
+    return this.userId;
   }
 }
