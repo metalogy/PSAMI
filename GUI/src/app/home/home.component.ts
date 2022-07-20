@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../_services/user.service';
 import {TokenStorageService} from "../_services/token-storage.service";
-import {AppRoutingModule} from "../app-routing.module";
 import {Router} from "@angular/router";
 
 @Component({
@@ -22,13 +21,5 @@ export class HomeComponent implements OnInit {
     } else {
       this.router.navigate(['/login'])
     }
-    this.userService.getPublicContent().subscribe({
-      next: data => {
-        this.content = data;
-      },
-      error: err => {
-        this.content = JSON.parse(err.error).message;
-      }
-    });
   }
 }

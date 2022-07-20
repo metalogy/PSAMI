@@ -110,7 +110,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     //this.userData.coords = this.coords;
     this.authService.register(this.userData).subscribe({
       next: data => {
-        console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
