@@ -1,0 +1,185 @@
+<div class="col-md-12">
+  <div class="card card-container">
+    <form
+      *ngIf="!isSuccessful"
+      name="form"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="form-group">
+        <label for="eventName">Event name</label>
+        <input
+          id="eventName"
+          type="text"
+          class="form-control"
+          name="eventName"
+          [(ngModel)]="eventData.eventName"
+          required
+          #eventName="ngModel"
+        />
+        <div class="alert-danger" *ngIf="eventName.errors && f.submitted">
+          <div *ngIf="eventName.errors['required']">Name of event is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input
+          id="description"
+          type="text"
+          class="form-control"
+          name="description"
+          [(ngModel)]="eventData.description"
+          required
+          #description="ngModel"
+        />
+        <div class="alert-danger" *ngIf="description.errors && f.submitted">
+          <div *ngIf="description.errors['required']">Description is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Event date</label>
+        <div id="date" class="form-group">
+          <input matInput type="datetime-local" [(ngModel)]="eventData.date" name="date"
+                 required #date="ngModel"/>
+        </div>
+      </div>
+      <div class="alert-danger" *ngIf="date.errors && f.submitted">
+        <div *ngIf="date.errors['required']">Date of event is required</div>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <input
+          id="status"
+          type="text"
+          class="form-control"
+          name="status"
+          [(ngModel)]="eventData.status"
+          required
+          #status="ngModel"
+        />
+        <div class="alert-danger" *ngIf="status.errors && f.submitted">
+          <div *ngIf="status.errors['required']">Status is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input
+          id="city"
+          type="text"
+          class="form-control"
+          name="city"
+          [(ngModel)]="eventData.city"
+          required
+          #city="ngModel"
+        />
+        <div class="alert-danger" *ngIf="city.errors && f.submitted">
+          <div *ngIf="city.errors['required']">City is required todo</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input
+          id="address"
+          type="text"
+          class="form-control"
+          name="address"
+          [(ngModel)]="eventData.address"
+          required
+          #address="ngModel"
+        />
+        <div class="alert-danger" *ngIf="address.errors && f.submitted">
+          <div *ngIf="address.errors['required']">Address is required todo</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Is event private?</label> <br>
+        <mat-radio-group class="example-radio-group" [(ngModel)]="eventData.isPrivate" [value]="eventData.isPrivate"
+                         name="isPrivate">
+          <mat-radio-button style="margin-right: 20px" [value]="true">Yes</mat-radio-button>
+          <mat-radio-button [value]="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="form-group">
+        <label>Is place for event reserved?</label> <br>
+        <mat-radio-group class="example-radio-group" [(ngModel)]="eventData.isReserved" [value]="eventData.isReserved"
+                         name="isReserved">
+          <mat-radio-button style="margin-right: 20px" [value]="true">Yes</mat-radio-button>
+          <mat-radio-button [value]="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="form-group">
+        <label for="minUsers">Minimum number of users</label>
+        <input
+          id="minUsers"
+          type="number"
+          class="form-control"
+          name="minUsers"
+          [(ngModel)]="eventData.minUsers"
+          required
+          #minUsers="ngModel"
+        />
+        <div class="alert-danger" *ngIf="minUsers.errors && f.submitted">
+          <div *ngIf="minUsers.errors['required']">Minimum number of users is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="maxUsers">Maximum number of users</label>
+        <input
+          id="maxUsers"
+          type="number"
+          class="form-control"
+          name="maxUsers"
+          [(ngModel)]="eventData.maxUsers"
+          required
+          #maxUsers="ngModel"
+        />
+        <div class="alert-danger" *ngIf="maxUsers.errors && f.submitted">
+          <div *ngIf="maxUsers.errors['required']">Maximum number of users is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="suggestedAge">Suggested age of event attendee</label>
+        <input
+          id="suggestedAge"
+          type="number"
+          class="form-control"
+          name="suggestedAge"
+          [(ngModel)]="eventData.suggestedAge"
+          required
+          #suggestedAge="ngModel"
+        />
+        <div class="alert-danger" *ngIf="suggestedAge.errors && f.submitted">
+          <div *ngIf="suggestedAge.errors['required']">Suggested age of event attendee is required</div>
+        </div>
+      </div>
+
+      <label for="photo">Select event photo (optional)</label>
+      <div id="photo" class="form-group">
+        <input type="file" class="file-upload"
+               (change)="handleFileInput($event)">
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-primary btn-block">Create event</button>
+      </div>
+      <div class="alert alert-warning" *ngIf="f.submitted && isAddingEventFailed">
+        Failed to add event!<br/>{{ errorMessage }}
+      </div>
+    </form>
+
+    <div class="alert alert-success" *ngIf="isSuccessful">
+      Event has been added successfully!
+    </div>
+  </div>
+</div>
