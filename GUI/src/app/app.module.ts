@@ -14,7 +14,9 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/mater
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {GoogleMapsModule} from '@angular/google-maps'
+import {GoogleMapsModule} from '@angular/google-maps';
+import { AddEventComponent } from './add-event/add-event.component'
+import {MatRadioModule} from "@angular/material/radio";
 
 
 @NgModule({
@@ -24,6 +26,7 @@ import {GoogleMapsModule} from '@angular/google-maps'
     RegisterComponent,
     HomeComponent,
     ProfileComponent,
+    AddEventComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,8 @@ import {GoogleMapsModule} from '@angular/google-maps'
     MatInputModule,
     BrowserAnimationsModule,
     GoogleMapsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatRadioModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
