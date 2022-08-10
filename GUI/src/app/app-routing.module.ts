@@ -4,13 +4,16 @@ import {RegisterComponent} from './register/register.component';
 import {LoginComponent} from './login/login.component';
 import {HomeComponent} from './home/home.component';
 import {ProfileComponent} from './profile/profile.component';
+import {AddEventComponent} from "./add-event/add-event.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'profile/:id', component: ProfileComponent}, //todo pathparam
+  {path: 'profile/:id', component: ProfileComponent}, //todo pathparam nie znaleziono
+  {path: 'add-event', component: AddEventComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'}
+
 ];
 
 @NgModule({
