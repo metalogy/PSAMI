@@ -1,0 +1,133 @@
+<div class="container" xmlns="http://www.w3.org/1999/html">
+
+  <h1 class="eventName">{{eventData.eventName}}</h1>
+
+  <div class="img">
+    <img class="img" src="../../assets/random.jpg">
+  </div>
+
+  <h2>Event description:</h2>
+  <div class="card card-container">
+    {{eventData.description}}
+  </div>
+
+  <div>
+    <h2>Event time:</h2>
+    <!--    <input matInput type="datetime-local" [(ngModel)]="eventData.date" name="date"-->
+    <!--           disabled/>-->
+    <!--    todo-->
+    <div style="font-weight: bold; font-style: italic">
+      {{eventData.date.toDateString()}}
+    </div>
+  </div>
+
+  <div>
+    <h2>Event location:</h2>
+    <google-map
+      #googleMap
+      height="500px"
+      width="100%"
+      [zoom]="zoom"
+      [center]="eventData.coords"
+      [options]="options">
+      <map-marker [position]="eventData.coords"></map-marker>
+      <!--          todo-->
+    </google-map>
+  </div>
+
+  <h2>Additional info:</h2>
+  <div>
+    <div class="row">
+      <div>Is place reserved?</div>
+      <div style="float: right; font-weight: bold; font-size: 12px; margin:0px">
+        {{eventData.isReserved}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div>Is event private?</div>
+      <div style="float: right; font-weight: bold; font-size: 12px; margin:0px">
+        {{eventData.isPrivate}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div>Minimum number of participants</div>
+      <div style="float: right; font-weight: bold; font-size: 12px; margin:0px">
+        {{eventData.minUsers}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div>Maximum number of participants</div>
+      <div style="float: right; font-weight: bold; font-size: 12px; margin:0px">
+        {{eventData.maxUsers}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div>Suggested age of participant</div>
+      <div style="float: right; font-weight: bold; font-size: 12px; margin:0px">
+        {{eventData.suggestedAge}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div>Created at:</div>
+      <div style="float: right; font-weight: bold; font-size: 12px; margin:0px">
+        {{eventData.createdAt.toDateString()}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div>Last updated at:</div>
+      <div style="float: right; font-weight: bold; font-size: 12px; margin:0px">
+        {{eventData.updatedAt.toDateString()}}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<hr/>
+
+<div class="form-group">
+  <form ng-controller="Controller">
+
+    <h2>Comments</h2>
+    <ul class="list-group">
+      <div *ngIf="eventComments">
+        <div>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let comment of eventComments">
+              <div class="row" style="float: right; font-size: 12px; margin:0px">
+                {{comment.date.toDateString()}}
+              </div>
+              <div class="row" style="font-size: 14px; margin-top:10px; margin-bottom:10px">
+                {{ comment.comment }}
+              </div>
+              <div class="row" style="float: right;  margin:0px">
+                <i>by <b>{{comment.user}}</b></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div *ngIf="eventComments.length===0">
+        <h3>No comments yet!</h3>
+      </div>
+    </ul>
+
+    <br/>
+    <hr/>
+
+    <h2>Leave a comment</h2>
+    <textarea class="form-control"
+              placeholder="Your Comment"
+              name="commentInput"
+              [(ngModel)]="commentInput"></textarea>
+    <br/>
+    <button class="btn btn-success btn-md pull-right" (click)='saveComment(commentInput)'>Add comment</button>
+  </form>
+</div>
