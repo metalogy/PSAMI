@@ -8,9 +8,6 @@ const USER_KEY = 'auth-user';
   providedIn: 'root'
 })
 export class TokenStorageService {
-  @Output() isLogged: EventEmitter<boolean> = new EventEmitter();
-  @Output() username: EventEmitter<string> = new EventEmitter();
-  @Output() userId: EventEmitter<number> = new EventEmitter();
 
   userData: any = {};
 
@@ -18,27 +15,25 @@ export class TokenStorageService {
   }
 
   signOut(): void {
-    this.isLogged.emit(false);
-    window.sessionStorage.clear();
+    localStorage.clear();
   }
 
   public saveToken(token: string): void {
-    this.isLogged.emit(true);
-    window.sessionStorage.removeItem(TOKEN_KEY);
-    window.sessionStorage.setItem(TOKEN_KEY, token);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.setItem(TOKEN_KEY, token);
   }
 
   public getToken(): string | null {
-    return window.sessionStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(TOKEN_KEY);
   }
 
   public saveUser(user: any): void {
-    window.sessionStorage.removeItem(USER_KEY);
-    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.removeItem(USER_KEY);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
   public getUser(): any {
-    const user = window.sessionStorage.getItem(USER_KEY);
+    const user = localStorage.getItem(USER_KEY);
     if (user) {
       return JSON.parse(user);
     }
@@ -46,9 +41,23 @@ export class TokenStorageService {
   }
 
   public saveUserData(userData: any): void {
-    this.userId.emit(userData.user.id);
-    this.username.emit(userData.user.username);
+    //todo
+    localStorage.setItem("isLoggedIn", "true")
+    localStorage.setItem("userId", userData.user.id)
+    localStorage.setItem("username", userData.user.username)
     this.userData = userData.user;
+  }
+
+  public getIsLoggedIn(): boolean {
+    return localStorage.getItem("isLoggedIn") === "true" ? true : false;
+  }
+
+  public getUserId(): number {
+    return Number(localStorage.getItem("userId"));
+  }
+
+  public getUsername(): string {
+    return localStorage.getItem("username");
   }
 
   public getUserAge(): any {

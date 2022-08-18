@@ -15,9 +15,10 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GoogleMapsModule} from '@angular/google-maps';
-import { AddEventComponent } from './add-event/add-event.component'
+import {AddEventComponent} from './events/add-event/add-event.component'
 import {MatRadioModule} from "@angular/material/radio";
-
+import {EventPageComponent} from './events/event-page/event-page.component';
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {MatRadioModule} from "@angular/material/radio";
     HomeComponent,
     ProfileComponent,
     AddEventComponent,
+    EventPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,8 @@ import {MatRadioModule} from "@angular/material/radio";
     BrowserAnimationsModule,
     GoogleMapsModule,
     ReactiveFormsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTableModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
