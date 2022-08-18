@@ -4,6 +4,7 @@ import {UserComment} from "./user-comment";
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../_services/user.service";
 import {AppComponent} from "../app.component";
+import {TokenStorageService} from "../_services/token-storage.service";
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +39,7 @@ export class ProfileComponent implements OnInit {
   userComments = [];
   commentInput = '';
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private appComponent: AppComponent) {
+  constructor(private route: ActivatedRoute, private userService: UserService, private tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
@@ -71,7 +72,7 @@ export class ProfileComponent implements OnInit {
   }
 
   saveComment(comment: string): void {
-    this.userService.saveProfileComments(this.appComponent.getUserId(), comment).subscribe(value => {
+    this.userService.saveProfileComments(this.tokenStorageService.getUserId(), comment).subscribe(value => {
       this.getProfileComments(this.id);
     });
     this.commentInput = '';

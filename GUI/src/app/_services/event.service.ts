@@ -23,7 +23,7 @@ export class EventService {
       {
         params:
           {
-            name: eventData.name,
+            name: eventData.eventName,
             description: eventData.description,
             date: eventData.date,
             status: eventData.status,
@@ -49,6 +49,26 @@ export class EventService {
   }
 
   saveEventComment(eventId: number, comment: string): Observable<any> {
-    return this.http.post(API_EVENT_COMMENTS, {"text": comment, "event_id": eventId, "rating": 6}, {headers: this.headers});//todo ocena?
+    return this.http.post(API_EVENT_COMMENTS, {
+      "text": comment,
+      "event_id": eventId,
+      "rating": 6
+    }, {headers: this.headers});//todo ocena?
+  }
+
+  getParticipants(eventId: number): Observable<any> {
+    return this.http.get(API_EVENT + 'participants/?event_id=' + eventId, {headers: this.headers});
+  }
+
+  joinEvent(eventId: number): Observable<any> {
+    return this.http.post(API_EVENT + 'participate/?event_id=' + eventId, {headers: this.headers});
+  }
+
+  leaveEvent(eventId: number): Observable<any> {
+    return this.http.delete(API_EVENT + 'not_participate/?event_id=' + eventId, {headers: this.headers});
+  }
+
+  deleteEvent(eventId: number): Observable<any> {
+    return this.http.delete(API_EVENT + '?event_id=' + eventId, {headers: this.headers});
   }
 }

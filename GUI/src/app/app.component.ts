@@ -7,22 +7,8 @@ import {TokenStorageService} from './_services/token-storage.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  isLoggedIn = false;
-  username = null;
-  userId = null;
 
-  constructor(private tokenStorageService: TokenStorageService) {
-    tokenStorageService.isLogged.subscribe(val => {
-      this.isLoggedIn = val;
-    });
-
-    tokenStorageService.userId.subscribe(userId => {
-      this.userId = userId;
-    });
-
-    tokenStorageService.username.subscribe(username => {
-      this.username = username;
-    });
+  constructor(public tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
@@ -31,9 +17,5 @@ export class AppComponent {
   logout(): void {
     this.tokenStorageService.signOut();
     window.location.reload();
-  }
-
-  getUserId(): number {
-    return this.userId;
   }
 }
