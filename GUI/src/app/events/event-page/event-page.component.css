@@ -16,6 +16,10 @@
   max-width: 100%;
 }
 
-.buttons{
+.buttons {
   float: right;
+}
+
+.table {
+  width: 100%;
 }

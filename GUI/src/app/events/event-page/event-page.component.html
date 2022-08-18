@@ -108,10 +108,57 @@
 
 <hr/>
 
+<div>
+  <div>
+    <h2>Event participants:</h2>
+    <div class="row">
+      Number of participants:
+      <div class="buttons">
+        {{eventParticipants$.length}}/{{eventData.maxUsers}}
+      </div>
+    </div>
+
+    <div *ngIf="eventParticipants$.length > 0">
+      <table mat-table [dataSource]="eventParticipants$" class="table">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef> No.</th>
+          <td mat-cell *matCellDef="let participant; let i=index"> {{ i + 1}}.</td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+          <!--              todo-->
+          <th mat-header-cell *matHeaderCellDef>Id todo na nick</th>
+          <td mat-cell *matCellDef="let participant"><a href="/profile/{{participant.id}}">{{ participant.id}} </a></td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef> First Name</th>
+          <td mat-cell *matCellDef="let participant"> {{ participant.firstName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef> Last Name</th>
+          <td mat-cell *matCellDef="let  participant"> {{ participant.lastName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dob">
+          <th mat-header-cell *matHeaderCellDef>Date of birth</th>
+          <td mat-cell *matCellDef="let  participant"> {{ participant.age}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <br>
+    </div>
+    <hr/>
+  </div>
+</div>
+
 <div class="form-group">
   <form ng-controller="Controller">
 
-    <h2>Comments</h2>
+    <h2>Comments:</h2>
     <ul class="list-group">
       <div *ngIf="eventComments">
         <div>
@@ -124,7 +171,7 @@
                 {{ comment.comment }}
               </div>
               <div class="row" style="float: right;  margin:0px">
-                <i>by <b>{{comment.user}}</b></i>
+                <i>by <b><a href="/profile/{{comment.user}}">{{comment.user}} </a></b></i>
               </div>
             </li>
           </ul>
@@ -139,7 +186,7 @@
     <br/>
     <hr/>
 
-    <h2>Leave a comment</h2>
+    <h2>Leave a comment:</h2>
     <textarea class="form-control"
               placeholder="Your Comment"
               name="commentInput"

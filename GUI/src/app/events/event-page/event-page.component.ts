@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserComment} from "../../profile/user-comment";
 import {User} from "../../_helpers/user";
 import {TokenStorageService} from "../../_services/token-storage.service";
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-event-page',
@@ -45,8 +46,12 @@ export class EventPageComponent implements OnInit {
   commentInput = '';
 
   eventParticipants = [];
+  eventParticipants$: Observable<User>[];
+
   isParticipant = false;
   isCreator = null;
+
+  public displayedColumns = ['index', 'id','firstName', 'lastName', 'dob'];
 
   constructor(private route: ActivatedRoute, private eventService: EventService, private tokenStorageService: TokenStorageService, private router: Router) {
   }
@@ -102,6 +107,7 @@ export class EventPageComponent implements OnInit {
         this.eventParticipants.push(new User(participant.id, participant.first_name, participant.last_name, participant.age, participant.city))
         this.isParticipant = participant.id === this.tokenStorageService.getUserId() ? true : this.isParticipant;
       })
+      this.eventParticipants$=this.eventParticipants;
     });
   }
 
