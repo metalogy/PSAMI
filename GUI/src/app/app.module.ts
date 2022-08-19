@@ -19,6 +19,7 @@ import {AddEventComponent} from './events/add-event/add-event.component'
 import {MatRadioModule} from "@angular/material/radio";
 import {EventPageComponent} from './events/event-page/event-page.component';
 import {MatTableModule} from "@angular/material/table";
+import { EventBrowserComponent } from './events/event-browser/event-browser.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {MatTableModule} from "@angular/material/table";
     ProfileComponent,
     AddEventComponent,
     EventPageComponent,
+    EventBrowserComponent,
   ],
   imports: [
     BrowserModule,

@@ -125,20 +125,20 @@
           <td mat-cell *matCellDef="let participant; let i=index"> {{ i + 1}}.</td>
         </ng-container>
 
-        <ng-container matColumnDef="id">
-          <!--              todo-->
-          <th mat-header-cell *matHeaderCellDef>Id todo na nick</th>
-          <td mat-cell *matCellDef="let participant"><a href="/profile/{{participant.id}}">{{ participant.id}} </a></td>
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef>Username</th>
+          <td mat-cell *matCellDef="let participant"><a
+            href="/profile/{{participant.id}}">{{ participant.username}} </a></td>
         </ng-container>
 
         <ng-container matColumnDef="firstName">
           <th mat-header-cell *matHeaderCellDef> First Name</th>
-          <td mat-cell *matCellDef="let participant"> {{ participant.firstName}} </td>
+          <td mat-cell *matCellDef="let participant"> {{ participant.first_name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="lastName">
           <th mat-header-cell *matHeaderCellDef> Last Name</th>
-          <td mat-cell *matCellDef="let  participant"> {{ participant.lastName}} </td>
+          <td mat-cell *matCellDef="let  participant"> {{ participant.last_name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="dob">

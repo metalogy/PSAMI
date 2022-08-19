@@ -44,6 +44,10 @@ export class EventService {
     return this.http.get(API_EVENT + id, {headers: this.headers})
   }
 
+  getEvents(): Observable<any> {
+    return this.http.get(API_EVENT, {headers: this.headers})
+  }
+
   getEventComments(id: number): Observable<any> {
     return this.http.get(API_EVENT_COMMENTS + id, {headers: this.headers})
   }
