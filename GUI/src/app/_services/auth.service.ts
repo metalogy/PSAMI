@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {TokenStorageService} from "./token-storage.service";
+import {DatePipe} from "@angular/common";
 
 const API = 'http://127.0.0.1:8000/';
 
@@ -17,7 +18,7 @@ const headersUrlencoded = {
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) {
+  constructor(private datePipe: DatePipe, private http: HttpClient, private tokenStorageService: TokenStorageService) {
   }
 
   login(email: string, password: string): Observable<any> {
@@ -31,19 +32,19 @@ export class AuthService {
 
   register(userData: any) {
     return this.http.post(API + 'user', userData.avatar,
-            {
-              params:
-                      {
-                        username: userData.username,
-                        first_name: userData.first_name,
-                        last_name: userData.last_name,
-                        email: userData.email,
-                        password: userData.password,
-                        age: userData.age.toISOString().split('T')[0],
-                        city: userData.city
-                      },
-              headers: headers
-            }
+      {
+        params:
+          {
+            username: userData.username,
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            email: userData.email,
+            password: userData.password,
+            age: this.datePipe.transform(userData.age, "yyyy-MM-dd"),
+            city: userData.city
+          },
+        headers: headers
+      }
     );
   }
 

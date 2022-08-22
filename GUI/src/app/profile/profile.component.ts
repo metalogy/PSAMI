@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {UserComment} from "./user-comment";
+import {UserComment} from "../models/user-comment";
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../_services/user.service";
-import {AppComponent} from "../app.component";
 import {TokenStorageService} from "../_services/token-storage.service";
 
 @Component({
