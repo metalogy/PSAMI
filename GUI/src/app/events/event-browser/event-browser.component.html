@@ -2,6 +2,26 @@
 
   <h1 class="eventHeader">Events:</h1>
 
+  <div class="searchbar">
+    <div class="inputs">
+      <input
+        style="margin-right: 20px"
+        type="text"
+        name="eventName"
+        placeholder="Event name"
+        [(ngModel)]="eventName"
+      />
+      <input matInput [matDatepicker]="datePicker" [(ngModel)]="eventDate" placeholder="Event date"
+             name="eventDate"
+      />
+      <mat-datepicker-toggle [for]="datePicker"></mat-datepicker-toggle>
+      <mat-datepicker #datePicker disabled="false"></mat-datepicker>
+    </div>
+
+    <button class="btn btn-primary btn-md float-right buttons" (click)='searchEvents()'>Search</button>
+    <button class="btn btn-danger btn-md float-right buttons" (click)='clearSearchbar()'>Clear</button>
+  </div>
+
   <div>
     <div *ngIf="events$.length > 0">
       <table mat-table [dataSource]="events$" class="table">

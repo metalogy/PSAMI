@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {User} from "../../models/user";
 import {EventService} from "../../_services/event.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-event-browser',
@@ -14,7 +14,10 @@ export class EventBrowserComponent implements OnInit {
 
   public displayedColumns = ['index', 'eventName', 'eventDate', 'eventCity', 'suggestedAge', 'minUsers', 'maxUsers'];
 
-  constructor(private eventService: EventService) {
+  eventName = '';
+  eventDate = null;
+
+  constructor(private datePipe: DatePipe, private eventService: EventService) {
   }
 
   ngOnInit(): void {
@@ -27,4 +30,15 @@ export class EventBrowserComponent implements OnInit {
     })
   }
 
+  clearSearchbar() {
+    this.eventName = '';
+    this.eventDate = null;
+  }
+
+  searchEvents() {
+    debugger;
+    this.eventService.searchEvents(this.eventName, this.datePipe.transform(this.eventDate, "yyyy-MM-dd")).subscribe(events => {
+      this.events$ = events.filter(filteredEvent => filteredEvent.is_private === false); //todo?
+    })
+  }
 }
