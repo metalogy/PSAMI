@@ -6,6 +6,7 @@ import {HomeComponent} from './home/home.component';
 import {ProfileComponent} from './profile/profile.component';
 import {AddEventComponent} from "./events/add-event/add-event.component";
 import {EventPageComponent} from "./events/event-page/event-page.component";
+import {EventBrowserComponent} from "./events/event-browser/event-browser.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'add-event', component: AddEventComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'event/:id', component: EventPageComponent}, //todo pathparam nie znaleziono
+  {path: 'events', component: EventBrowserComponent},
 ];
 
 @NgModule({

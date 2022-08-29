@@ -44,6 +44,22 @@ export class EventService {
     return this.http.get(API_EVENT + id, {headers: this.headers})
   }
 
+  getEvents(): Observable<any> {
+    return this.http.get(API_EVENT, {headers: this.headers})
+  }
+
+  searchEvents(eventName: string, eventDate: string): Observable<any> {
+    if (eventName != '' && eventDate != null) {
+      return this.http.get(API_EVENT + '?name=' + eventName + '?date=' + eventDate, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
+    } else if (eventName != '') {
+      return this.http.get(API_EVENT + '?name=' + eventName, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
+    } else if (eventDate != null) {
+      return this.http.get(API_EVENT + '?date=' + eventDate, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
+    } else {
+      return this.http.get(API_EVENT, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
+    }
+  }
+
   getEventComments(id: number): Observable<any> {
     return this.http.get(API_EVENT_COMMENTS + id, {headers: this.headers})
   }

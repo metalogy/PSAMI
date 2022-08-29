@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from "../../_services/event.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UserComment} from "../../profile/user-comment";
-import {User} from "../../_helpers/user";
+import {UserComment} from "../../models/user-comment";
+import {User} from "../../models/user";
 import {TokenStorageService} from "../../_services/token-storage.service";
 import {Observable} from 'rxjs';
 
@@ -45,13 +45,12 @@ export class EventPageComponent implements OnInit {
   eventComments = [];
   commentInput = '';
 
-  eventParticipants = [];
-  eventParticipants$: Observable<User>[];
+  eventParticipants$: Observable<User>[] = [];
 
   isParticipant = false;
   isCreator = null;
 
-  public displayedColumns = ['index', 'id','firstName', 'lastName', 'dob'];
+  public displayedColumns = ['index', 'username', 'firstName', 'lastName', 'dob'];
 
   constructor(private route: ActivatedRoute, private eventService: EventService, private tokenStorageService: TokenStorageService, private router: Router) {
   }
@@ -103,11 +102,7 @@ export class EventPageComponent implements OnInit {
 
   getParticipants(eventId: number) {
     this.eventService.getParticipants(eventId).subscribe(participants => {
-      participants.forEach(participant => {
-        this.eventParticipants.push(new User(participant.id, participant.first_name, participant.last_name, participant.age, participant.city))
-        this.isParticipant = participant.id === this.tokenStorageService.getUserId() ? true : this.isParticipant;
-      })
-      this.eventParticipants$=this.eventParticipants;
+      this.eventParticipants$ = participants;
     });
   }
 
@@ -129,7 +124,7 @@ export class EventPageComponent implements OnInit {
 
   deleteEvent() {
     this.eventService.deleteEvent(this.id).subscribe(response => {
-      this.router.navigateByUrl("/home"); //todo
+      this.router.navigateByUrl("/events");
     })
   }
 

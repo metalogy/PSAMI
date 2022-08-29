@@ -1,0 +1,73 @@
+<div class="container" xmlns="http://www.w3.org/1999/html">
+
+  <h1 class="eventHeader">Events:</h1>
+
+  <div class="searchbar">
+    <div class="inputs">
+      <input
+        style="margin-right: 20px"
+        type="text"
+        name="eventName"
+        placeholder="Event name"
+        [(ngModel)]="eventName"
+      />
+      <input matInput [matDatepicker]="datePicker" [(ngModel)]="eventDate" placeholder="Event date"
+             name="eventDate"
+      />
+      <mat-datepicker-toggle [for]="datePicker"></mat-datepicker-toggle>
+      <mat-datepicker #datePicker disabled="false"></mat-datepicker>
+    </div>
+
+    <button class="btn btn-primary btn-md float-right buttons" (click)='searchEvents()'>Search</button>
+    <button class="btn btn-danger btn-md float-right buttons" (click)='clearSearchbar()'>Clear</button>
+  </div>
+
+  <div>
+    <div *ngIf="events$.length > 0">
+      <table mat-table [dataSource]="events$" class="table">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef> No.</th>
+          <td mat-cell *matCellDef="let event; let i=index"> {{ i + 1}}.</td>
+        </ng-container>
+
+        <ng-container matColumnDef="eventName">
+          <th mat-header-cell *matHeaderCellDef>Event name</th>
+          <td mat-cell *matCellDef="let event"><a href="/event/{{event.id}}">{{ event.name}} </a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="eventDate">
+          <th mat-header-cell *matHeaderCellDef>Date of event</th>
+          <td mat-cell *matCellDef="let event"> {{ event.date.split('T')[0]}} {{ event.date.split('T')[1]}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="eventCity">
+          <th mat-header-cell *matHeaderCellDef>City</th>
+          <td mat-cell *matCellDef="let  event"> {{ event.city}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="suggestedAge">
+          <th mat-header-cell *matHeaderCellDef>Suggested age</th>
+          <td mat-cell *matCellDef="let  event"> {{ event.suggested_age}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="minUsers">
+          <th mat-header-cell *matHeaderCellDef>Minimum no. of participants</th>
+          <td mat-cell *matCellDef="let  event"> {{ event.min_users}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="maxUsers">
+          <th mat-header-cell *matHeaderCellDef>Maximum no. of participants</th>
+          <td mat-cell *matCellDef="let  event"> {{ event.max_users}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <br>
+    </div>
+    <div *ngIf="events$.length===0">
+      <h2>There are no events</h2>
+    </div>
+  </div>
+</div>

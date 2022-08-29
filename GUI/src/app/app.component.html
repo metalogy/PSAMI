@@ -6,26 +6,27 @@
         <a href="/home" class="nav-link" routerLink="home">Home </a>
       </li>
       <li class="nav-item" *ngIf="tokenStorageService.getIsLoggedIn()">
-        <a href="/events" class="nav-link" routerLink="admin">Browse events</a>
+        <a href="/events" class="nav-link">Browse events</a>
       </li>
       <li class="nav-item" *ngIf="tokenStorageService.getIsLoggedIn()">
-        <a href="/add-event" class="nav-link" routerLink="add-event">Add event</a>
+        <a href="/add-event" class="nav-link">Add event</a>
       </li>
       <li class="nav-item" *ngIf="tokenStorageService.getIsLoggedIn()">
-        <a href="/create-event" class="nav-link" routerLink="mod">My events</a>
+        <a href="/create-event" class="nav-link">My events</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="!tokenStorageService.getIsLoggedIn()">
       <li class="nav-item">
-        <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+        <a href="/register" class="nav-link">Sign Up</a>
       </li>
       <li class="nav-item">
-        <a href="/login" class="nav-link" routerLink="login">Login</a>
+        <a href="/login" class="nav-link">Login</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="tokenStorageService.getIsLoggedIn()">
       <li class="nav-item">
-        <a [routerLink]="['profile', tokenStorageService.getUserId()]" class="nav-link" routerLink="profile">Your profile ({{tokenStorageService.getUsername()}})</a>
+        <a [routerLink]="['profile', tokenStorageService.getUserId()]" class="nav-link">Your profile
+          ({{tokenStorageService.getUsername()}})</a>
       </li>
       <li class="nav-item">
         <a href class="nav-link" (click)="logout()">Log out</a>
