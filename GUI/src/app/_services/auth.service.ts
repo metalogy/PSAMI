@@ -30,21 +30,24 @@ export class AuthService {
   }
 
   register(userData: any) {
-    return this.http.post(API + 'user', userData.avatar,
-            {
-              params:
-                      {
-                        username: userData.username,
-                        first_name: userData.first_name,
-                        last_name: userData.last_name,
-                        email: userData.email,
-                        password: userData.password,
-                        age: userData.age.toISOString().split('T')[0],
-                        city: userData.city
-                      },
-              headers: headers
-            }
-    );
+    const file = new FormData();
+    if (userData.avatar != null) {
+      file.append('file', userData.avatar, userData.avatar.name);
+    }
+
+    let pathParams =
+      '?username=' + userData.username +
+      '&first_name=' + userData.first_name +
+      '&last_name=' + userData.last_name +
+      '&email=' + userData.email +
+      '&password=' + userData.password +
+      '&age=' + userData.age.toISOString().split('T')[0] +
+      '&city=' + userData.city;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', API + 'user/' + pathParams, false);
+    xhr.send(file);
+    return xhr.responseText;
   }
 
   getLoggedUserData(): Observable<any> {

@@ -3,7 +3,6 @@ import {FormControl} from "@angular/forms";
 import {UserComment} from "./user-comment";
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../_services/user.service";
-import {AppComponent} from "../app.component";
 import {TokenStorageService} from "../_services/token-storage.service";
 
 @Component({
@@ -31,7 +30,7 @@ export class ProfileComponent implements OnInit {
     lastName: null,
     dob: null,
     coords: null, //todo
-    photo: " null", //todo
+    profilePicturePath: null,
   };
 
   id: number;
@@ -59,6 +58,7 @@ export class ProfileComponent implements OnInit {
       this.userData.firstName = userData.first_name;
       this.userData.lastName = userData.last_name;
       this.userData.dob = new FormControl(new Date(userData.age));
+      this.userData.profilePicturePath = '../../assets/' + userData.profile_picture;
     });
   }
 

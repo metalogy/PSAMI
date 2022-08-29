@@ -24,9 +24,9 @@ def check_file_upload(file):
         timestamp = datetime.datetime.now()
         timestamp_to_str = timestamp.strftime("%Y-%m-%d-%H-%M-%S")
         full_path_picture = file.filename[:-
-                                          4] + "_" + timestamp_to_str + ".png"
+        4] + "_" + timestamp_to_str + ".png"
         image = Image.open(io.BytesIO(event_picture))
-        image.save(f".\\images\\{full_path_picture}", format="png")
+        image.save(f".\\GUI\\src\\assets\\{full_path_picture}", format="png")
     return full_path_picture
 
 
@@ -97,15 +97,15 @@ def delete(db: Session, mail: str):
 
 
 def create_user(
-    db: Session,
-    username: str,
-    first_name: str,
-    last_name: str,
-    email: str,
-    password: str,
-    age: datetime.date,
-    city: str,
-    file: Optional[UploadFile] = File(None),
+        db: Session,
+        username: str,
+        first_name: str,
+        last_name: str,
+        email: str,
+        password: str,
+        age: datetime.date,
+        city: str,
+        file: Optional[UploadFile] = File(None),
 ):
     user = db.query(user_model.User).filter(
         user_model.User.email == email).first()
@@ -126,7 +126,7 @@ def create_user(
         password=hashing.Hash.bcrypt(password),
         age=age,
         city=city,
-        profile_picture="images\\" + full_path_picture,
+        profile_picture=full_path_picture,
     )
 
     db.add(new_user)
@@ -143,7 +143,7 @@ def update_profile_picture(db: Session, file, mail):
     )
     full_path_picture = check_file_upload(file)
 
-    user.profile_picture = "images\\" + full_path_picture
+    user.profile_picture = full_path_picture
 
     db.add(user)
     db.commit()
@@ -152,7 +152,7 @@ def update_profile_picture(db: Session, file, mail):
 
 
 def search_user(
-    db: Session, username: Optional[str] = None, email: Optional[str] = None
+        db: Session, username: Optional[str] = None, email: Optional[str] = None
 ):
     users = db.query(user_model.User)
     if username:

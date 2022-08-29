@@ -89,7 +89,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   handleFileInput(event) {
-    this.getBase64(event);
+    this.userData.avatar = event.target.files[0];
   }
 
   getBase64(event) {
@@ -108,16 +108,17 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     //this.userData.coords = this.coords;
-    this.authService.register(this.userData).subscribe({
-      next: data => {
-        this.isSuccessful = true;
+   let response = this.authService.register(this.userData)
+
+    if(response.includes('User has been created!'))
+    {
+      this.isSuccessful = true;
         this.isSignUpFailed = false;
-      },
-      error: err => {
-        this.errorMessage = err.error.message;
+    }
+    else{
+       this.errorMessage = response;
         this.isSignUpFailed = true;
-      }
-    });
+    }
   }
 
 }
