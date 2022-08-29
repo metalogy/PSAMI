@@ -17,7 +17,6 @@ const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'event/:id', component: EventPageComponent}, //todo pathparam nie znaleziono
   {path: 'events', component: EventBrowserComponent},
-
 ];
 
 @NgModule({

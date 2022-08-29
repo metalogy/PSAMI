@@ -18,7 +18,6 @@ export class UserService {
     });
 
     return this.http.get(API + 'user/' + id, {headers}) //todo? wysyłanie hasła z powrotem na front;
-    //todo na front z be chcemy raczej przesłać zdjęcie a nie odnośnik do png
     // todo coordsy
   }
 
@@ -26,14 +25,14 @@ export class UserService {
     const headers = new HttpHeaders({
       'X-Token': this.tokenStorageService.getToken(),
     });
-    return this.http.get(API + 'profile_comments/' + id, {headers}) //todo? nick usera w requeście / ew. można z get user, ale gorsza wydajność
+    return this.http.get(API + 'profile_comments/' + id, {headers})
   }
 
   saveProfileComments(userId: number, comment: string): Observable<any> {
     const headers = new HttpHeaders({
       'X-Token': this.tokenStorageService.getToken(),
     });
-    return this.http.post(API + 'profile_comments/', {"text": comment, "user_id": userId}, {headers});//todo? dodać nick usera w requeście
+    return this.http.post(API + 'profile_comments/', {"text": comment, "user_id": userId}, {headers});
   }
 
 }

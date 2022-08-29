@@ -42,25 +42,25 @@ def check_file_upload(file):
         full_path_picture = file.filename[:-
                                           4] + "_" + timestamp_to_str + ".png"
         image = Image.open(io.BytesIO(event_picture))
-        image.save(f".\\images\\{full_path_picture}", format="png")
+        image.save(f".\\GUI\\src\\assets\\{full_path_picture}", format="png")
     return full_path_picture
 
 
 def create_event(
-    db: Session,
-    name: str,
-    description: str,
-    date: datetime.datetime,
-    status: str,
-    city: str,
-    address: str,
-    is_private: bool,
-    is_reserved: bool,
-    min_users: int,
-    max_users: int,
-    suggested_age: int,
-    mail: str,
-    file: Optional[UploadFile] = File(None),
+        db: Session,
+        name: str,
+        description: str,
+        date: datetime.datetime,
+        status: str,
+        city: str,
+        address: str,
+        is_private: bool,
+        is_reserved: bool,
+        min_users: int,
+        max_users: int,
+        suggested_age: int,
+        mail: str,
+        file: Optional[UploadFile] = File(None),
 ):
     user = get_current_user(db, mail)
     localization = check_localization(address, city)
@@ -70,7 +70,7 @@ def create_event(
         name=name,
         description=description,
         date=date,
-        event_picture="images\\" + full_path_picture,
+        event_picture=full_path_picture,
         status=status,
         city=city,
         address=address,
@@ -170,7 +170,7 @@ def update_event_picture(db: Session, file, mail: str, event_id: int):
             detail=f"You can't change someone's event image!",
         )
 
-    event.event_picture = "images\\" + full_path_picture
+    event.event_picture = full_path_picture
 
     db.add(event)
     db.commit()
@@ -180,7 +180,7 @@ def update_event_picture(db: Session, file, mail: str, event_id: int):
 
 
 def search_event(
-    db: Session, name: Optional[str] = None, date: Optional[datetime.date] = None
+        db: Session, name: Optional[str] = None, date: Optional[datetime.date] = None
 ):
     events = db.query(event_model.Event)
 
@@ -204,7 +204,8 @@ def participate(db: Session, event_id: int, mail: str):
         participate = event_model.event_participants.insert().values(
             event_id=event_id, user_id=user.id)
         is_already_participating = db.query(event_model.event_participants).filter(
-            event_model.event_participants.c.event_id == event_id).filter(event_model.event_participants.c.user_id == user.id).first()
+            event_model.event_participants.c.event_id == event_id).filter(
+            event_model.event_participants.c.user_id == user.id).first()
         if is_already_participating:
             raise HTTPException(
                 status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
@@ -227,7 +228,8 @@ def delete_participate(db: Session, event_id: int, mail: str):
         event_model.Event.id == event_id).first()
     if events:
         is_already_participating = db.query(event_model.event_participants).filter(
-            event_model.event_participants.c.event_id == event_id).filter(event_model.event_participants.c.user_id == user.id).first()
+            event_model.event_participants.c.event_id == event_id).filter(
+            event_model.event_participants.c.user_id == user.id).first()
         statement = event_model.event_participants.delete().where(
             event_model.event_participants.c.event_id == event_id,
             event_model.event_participants.c.user_id == user.id,
