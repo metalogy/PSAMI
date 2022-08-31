@@ -3,9 +3,10 @@ starlette
 pydantic
 Pillow
 numpy
-jose
+python-jose[cryptography]
 sqlalchemy
 passlib
 python-multipart==0.0.5
 geopy
 imageio
+bcrypt
