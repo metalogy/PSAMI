@@ -1,0 +1,11 @@
+uvicorn
+starlette
+pydantic
+Pillow
+numpy
+jose
+sqlalchemy
+passlib
+python-multipart==0.0.5
+geopy
+imageio
