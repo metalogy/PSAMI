@@ -3,7 +3,7 @@
   <h1 class="eventName">{{eventData.eventName}}</h1>
 
   <div class="img">
-    <img class="img" src="../../assets/random.jpg">
+    <img class="img" [src]="eventData.eventPicturePath">
   </div>
 
   <h2>Event description:</h2>
@@ -23,6 +23,8 @@
 
   <div>
     <h2>Event location:</h2>
+    <h3 style="font-weight: bold">City: {{eventData.city}}</h3>
+    <h3 style="font-weight: bold">Address: {{eventData.address}}</h3>
     <google-map
       #googleMap
       height="500px"
@@ -31,7 +33,6 @@
       [center]="eventData.coords"
       [options]="options">
       <map-marker [position]="eventData.coords"></map-marker>
-      <!--          todo-->
     </google-map>
   </div>
 

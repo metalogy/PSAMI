@@ -15,7 +15,6 @@ export class EventPageComponent implements OnInit {
   private id: number;
 
   zoom = 20;
-  coords!: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
     zoomControl: true,
     scrollwheel: true,
@@ -29,7 +28,8 @@ export class EventPageComponent implements OnInit {
     description: null,
     date: null,
     status: null, //enum todo?
-    city: null, //todo koordynaty?, geolokator na BE działa chujowo
+    city: null,
+    coords: null,
     address: null,
     isPrivate: false,
     isReserved: false,
@@ -68,7 +68,7 @@ export class EventPageComponent implements OnInit {
   getEventData(eventId: number) {
     this.eventService.getEvent(eventId).subscribe(eventData => {
       this.eventData.eventName = eventData.name;
-      this.eventData.photo = eventData.event_picture;
+      this.eventData.eventPicturePath = '../../assets/' + eventData.event_picture;
       this.eventData.description = eventData.description;
       this.eventData.isReserved = eventData.is_reserved === true ? "Yes" : "No"
       this.eventData.isPrivate = eventData.is_private === true ? "Yes" : "No"
@@ -79,6 +79,9 @@ export class EventPageComponent implements OnInit {
       this.eventData.createdAt = new Date(eventData.created_at.replace('T', ' '));
       this.eventData.updatedAt = new Date(eventData.updated_at.replace('T', ' '));
       this.eventData.creatorId = eventData.user_id;
+      this.eventData.coords = new google.maps.LatLng(parseFloat(eventData.latitude), parseFloat(eventData.longitude));
+      this.eventData.city = eventData.city;
+      this.eventData.address = eventData.address;
 
       this.isCreatorOfEvent();
     });
