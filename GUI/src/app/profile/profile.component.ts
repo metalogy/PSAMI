@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {UserComment} from "../models/user-comment";
+import {Comment} from "../models/comment";
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../_services/user.service";
 import {TokenStorageService} from "../_services/token-storage.service";
@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit {
 
   userComments = [];
   commentInput = '';
+  commentErrorVisible = false;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private tokenStorageService: TokenStorageService) {
   }
@@ -79,15 +80,20 @@ export class ProfileComponent implements OnInit {
     this.userService.getProfileComments(profileId).subscribe(comments => {
       comments.forEach(comment => {
         // todo nick usera
-        this.userComments.push(new UserComment(comment.writer_id, comment.text, new Date(comment.created_at)));
+        this.userComments.push(new Comment(comment.writer_id, comment.text, new Date(comment.created_at)));
       })
     });
   }
 
   saveComment(comment: string): void {
-    this.userService.saveProfileComments(this.tokenStorageService.getUserId(), comment).subscribe(value => {
-      this.getProfileComments(this.id);
-    });
-    this.commentInput = '';
+    if (comment === '') {
+      this.commentErrorVisible = true;
+    } else {
+      this.commentErrorVisible = false;
+      this.userService.saveProfileComments(this.tokenStorageService.getUserId(), comment).subscribe(value => {
+        this.getProfileComments(this.id);
+      });
+      this.commentInput = '';
+    }
   }
 }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from "../../_services/event.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UserComment} from "../../models/user-comment";
+import {Comment} from "../../models/comment";
 import {User} from "../../models/user";
 import {TokenStorageService} from "../../_services/token-storage.service";
 import {Observable} from 'rxjs';
@@ -44,6 +44,8 @@ export class EventPageComponent implements OnInit {
 
   eventComments = [];
   commentInput = '';
+  commentRating = 'None';
+  commentErrorVisible = false;
 
   eventParticipants$: Observable<User>[] = [];
 
@@ -91,16 +93,21 @@ export class EventPageComponent implements OnInit {
     this.eventComments = [];
     this.eventService.getEventComments(eventId).subscribe(comments => {
       comments.forEach(comment => {
-        this.eventComments.push(new UserComment(comment.writer_id, comment.text, new Date(comment.created_at)));
+        this.eventComments.push(new Comment(comment.writer_id, comment.text, new Date(comment.created_at), comment.rating,));
       })
     });
   }
 
-  saveComment(comment: string): void {
-    this.eventService.saveEventComment(this.id, comment).subscribe(value => {
-      this.getEventComments(this.id);
-    });
-    this.commentInput = '';
+  saveComment(comment: string, rating: string): void {
+    if (comment === '') {
+      this.commentErrorVisible = true;
+    } else {
+      this.commentErrorVisible = false;
+      this.eventService.saveEventComment(this.id, comment, rating).subscribe(value => {
+        this.getEventComments(this.id);
+      });
+      this.commentInput = '';
+    }
   }
 
   getParticipants(eventId: number) {
@@ -131,4 +138,7 @@ export class EventPageComponent implements OnInit {
     })
   }
 
+  isNumber(rating: number) {
+    return !Number.isNaN(rating);
+  }
 }
