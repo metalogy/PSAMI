@@ -32,8 +32,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     email: null,
     password: null,
     age: null,
-    city: "testCity", //todo adjust
-    //coords: null,
+    city: null,
     avatar: null
   };
 
@@ -69,6 +68,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       this.ngZone.run(() => {
         let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
+        this.userData.city = place.address_components
+          .filter(addressComponents => addressComponents.types[0] === 'locality' && addressComponents.types[1] === 'political')
+          .map(addressComponents => addressComponents.short_name)[0];
+
         if (place.geometry === undefined || place.geometry === null) {
           return;
         }
@@ -81,12 +84,12 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
   }
 
-  mapClick($event: google.maps.MapMouseEvent | google.maps.IconMouseEvent) {
-    this.coords = {
-      lat: $event.latLng?.lat()!,
-      lng: $event.latLng?.lng()!
-    };
-  }
+  // mapClick($event: google.maps.MapMouseEvent | google.maps.IconMouseEvent) {
+  //   this.coords = {
+  //     lat: $event.latLng?.lat()!,
+  //     lng: $event.latLng?.lng()!
+  //   };
+  // }
 
   handleFileInput(event) {
     this.userData.avatar = event.target.files[0];
@@ -107,17 +110,14 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    //this.userData.coords = this.coords;
-   let response = this.authService.register(this.userData)
+    let response = this.authService.register(this.userData)
 
-    if(response.includes('User has been created!'))
-    {
+    if (response.includes('User has been created!')) {
       this.isSuccessful = true;
-        this.isSignUpFailed = false;
-    }
-    else{
-       this.errorMessage = response;
-        this.isSignUpFailed = true;
+      this.isSignUpFailed = false;
+    } else {
+      this.errorMessage = response;
+      this.isSignUpFailed = true;
     }
   }
 

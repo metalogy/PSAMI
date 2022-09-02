@@ -13,7 +13,7 @@ export class AddEventComponent implements OnInit {
     description: null,
     date: null,
     status: null, //enum todo?
-    city: "London", //todo koordynaty?, geolokator na BE działa chujowo
+    city: null, //todo!!!!
     address: null,
     isPrivate: false,
     isReserved: false,

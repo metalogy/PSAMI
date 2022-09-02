@@ -36,7 +36,6 @@ export class EventBrowserComponent implements OnInit {
   }
 
   searchEvents() {
-    debugger;
     this.eventService.searchEvents(this.eventName, this.datePipe.transform(this.eventDate, "yyyy-MM-dd")).subscribe(events => {
       this.events$ = events.filter(filteredEvent => filteredEvent.is_private === false); //todo?
     })

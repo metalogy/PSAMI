@@ -14,7 +14,6 @@ export class ProfileComponent implements OnInit {
   commentField = document.getElementById('comment');
 
   zoom = 20;
-  coords!: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
     zoomControl: true,
     scrollwheel: true,
@@ -22,6 +21,7 @@ export class ProfileComponent implements OnInit {
     fullscreenControl: true,
     mapTypeId: 'hybrid',
   };
+  geocoder = new google.maps.Geocoder();
 
   userData: any = {
     username: null,
@@ -29,7 +29,8 @@ export class ProfileComponent implements OnInit {
     firstName: null,
     lastName: null,
     dob: null,
-    coords: null, //todo
+    city: null,
+    coords: null,
     profilePicturePath: null,
   };
 
@@ -59,6 +60,17 @@ export class ProfileComponent implements OnInit {
       this.userData.lastName = userData.last_name;
       this.userData.dob = new FormControl(new Date(userData.age));
       this.userData.profilePicturePath = '../../assets/' + userData.profile_picture;
+      this.userData.city = userData.city;
+
+      this.geocoder.geocode({'address': this.userData.city}, function (results, status) {
+        if (status == 'OK') {
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      }).then((result) => {
+        const {results} = result;
+        this.userData.coords = new google.maps.LatLng(results[0].geometry.location);
+      });
     });
   }
 
@@ -66,6 +78,7 @@ export class ProfileComponent implements OnInit {
     this.userComments = [];
     this.userService.getProfileComments(profileId).subscribe(comments => {
       comments.forEach(comment => {
+        // todo nick usera
         this.userComments.push(new UserComment(comment.writer_id, comment.text, new Date(comment.created_at)));
       })
     });
