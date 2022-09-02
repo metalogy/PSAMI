@@ -64,11 +64,11 @@ export class EventService {
     return this.http.get(API_EVENT_COMMENTS + id, {headers: this.headers})
   }
 
-  saveEventComment(eventId: number, comment: string): Observable<any> {
+  saveEventComment(eventId: number, comment: string, rating: string): Observable<any> {
     return this.http.post(API_EVENT_COMMENTS, {
       "text": comment,
       "event_id": eventId,
-      "rating": 6
+      "rating": rating
     }, {headers: this.headers});//todo ocena?
   }
 
