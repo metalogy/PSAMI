@@ -94,13 +94,13 @@
   <button class="btn btn-danger btn-md  mr-1 float-right" *ngIf="isCreator" (click)='deleteEvent()'>Delete
     event
   </button>
-  <button class="btn btn-warning btn-md mr-1 float-right" *ngIf="isCreator">Edit
+  <button class="btn btn-warning btn-md mr-1 float-right" *ngIf="isCreator" (click)='editEvent()'>Edit
     event
   </button>
-  <button class="btn btn-success btn-md mr-1 float-right" *ngIf="!isParticipant" (click)='joinEvent()'>
+  <button class="btn btn-success btn-md mr-1 float-right" *ngIf="!isUserParticipant" (click)='joinEvent()'>
     Join event
   </button>
-  <button class="btn btn-primary btn-md mr-1 float-right" *ngIf="isParticipant" (click)='leaveEvent()'>
+  <button class="btn btn-primary btn-md mr-1 float-right" *ngIf="isUserParticipant" (click)='leaveEvent()'>
     Leave event
   </button>
   <br>

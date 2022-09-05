@@ -47,7 +47,7 @@ export class EventPageComponent implements OnInit {
 
   eventParticipants$: Observable<User>[] = [];
 
-  isParticipant = false;
+  isUserParticipant = false;
   isCreator = null;
 
   public displayedColumns = ['index', 'username', 'firstName', 'lastName', 'dob'];
@@ -106,6 +106,7 @@ export class EventPageComponent implements OnInit {
   getParticipants(eventId: number) {
     this.eventService.getParticipants(eventId).subscribe(participants => {
       this.eventParticipants$ = participants;
+      this.isUserParticipant = participants.filter(participant => participant.id === this.tokenStorageService.getUserId()).length > 0 ? true : false;
     });
   }
 
@@ -131,4 +132,7 @@ export class EventPageComponent implements OnInit {
     })
   }
 
+  editEvent() {
+    this.router.navigateByUrl(`/event/${this.id}/edit`);
+  }
 }

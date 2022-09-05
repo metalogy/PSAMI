@@ -40,6 +40,25 @@ export class EventService {
     );
   }
 
+  editEvent(eventId: number, eventData: any): Observable<any> {
+    return this.http.put(API_EVENT + eventId,
+      {
+            name: eventData.eventName,
+            description: eventData.description,
+            date: eventData.date,
+            status: 'status',
+            city: eventData.city,
+            address: eventData.address,
+            is_private: eventData.isPrivate,
+            is_reserved: eventData.isReserved,
+            min_users: eventData.minUsers,
+            max_users: eventData.maxUsers,
+            suggested_age: eventData.suggestedAge,
+      },
+      {headers: this.headers}
+    );
+  }
+
   getEvent(id: number): Observable<any> {
     return this.http.get(API_EVENT + id, {headers: this.headers})
   }

@@ -21,6 +21,7 @@ import {EventPageComponent} from './events/event-page/event-page.component';
 import {MatTableModule} from "@angular/material/table";
 import {EventBrowserComponent} from './events/event-browser/event-browser.component';
 import {DatePipe} from "@angular/common";
+import { EditEventComponent } from './events/edit-event/edit-event.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {DatePipe} from "@angular/common";
     AddEventComponent,
     EventPageComponent,
     EventBrowserComponent,
+    EditEventComponent,
   ],
   imports: [
     BrowserModule,
