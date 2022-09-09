@@ -24,6 +24,7 @@ import {DatePipe} from "@angular/common";
 import { EditEventComponent } from './events/edit-event/edit-event.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { MyEventsComponent } from './events/my-events/my-events.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { MyEventsComponent } from './events/my-events/my-events.component';
     GoogleMapsModule,
     ReactiveFormsModule,
     MatRadioModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},

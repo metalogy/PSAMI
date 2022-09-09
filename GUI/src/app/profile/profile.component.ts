@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit {
   userComments = [];
   commentInput = '';
   profileOwner: boolean;
+  commentErrorVisible = false;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private tokenStorageService: TokenStorageService, private router: Router) {
   }
@@ -60,7 +61,6 @@ export class ProfileComponent implements OnInit {
 
   getProfileData(profileId: number) {
     this.userService.getProfile(profileId).subscribe(userData => {
-      debugger;
       this.userData.email = userData.email;
       this.userData.username = userData.username;
       this.userData.firstName = userData.first_name;
@@ -92,10 +92,15 @@ export class ProfileComponent implements OnInit {
   }
 
   saveComment(comment: string): void {
-    this.userService.saveProfileComments(this.tokenStorageService.getUserId(), comment).subscribe(value => {
-      this.getProfileComments(this.id);
-    });
-    this.commentInput = '';
+    if (comment === '') {
+      this.commentErrorVisible = true;
+    } else {
+      this.commentErrorVisible = false;
+      this.userService.saveProfileComments(this.tokenStorageService.getUserId(), comment).subscribe(value => {
+        this.getProfileComments(this.id);
+      });
+      this.commentInput = '';
+    }
   }
 
   editEvent() {

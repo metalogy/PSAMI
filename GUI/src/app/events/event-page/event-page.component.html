@@ -175,6 +175,10 @@
                   {{ comment.comment }}
                 </div>
                 <div class="row" style="float: right;  margin:0px">
+                  <i *ngIf="isNumber(comment.rating)">Rating: <b>{{comment.rating}}/6</b></i>
+                  <i *ngIf="!isNumber(comment.rating)">Rating: <b>no rating</b></i>
+                </div>
+                <div class="row" style="float: right;  margin:0px">
                   <i>by <b><a href="/profile/{{comment.user}}">{{comment.user}} </a></b></i>
                 </div>
                 <button style="float: right" *ngIf="comment.user===this.tokenStorageService.getUserId()"
@@ -196,11 +200,27 @@
     <hr/>
 
     <h2>Leave a comment:</h2>
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="commentErrorVisible"
+    >
+      Comment mustn't be empty !
+    </div>
     <textarea class="form-control"
               placeholder="Your Comment"
               name="commentInput"
               [(ngModel)]="commentInput"></textarea>
+    <mat-form-field appearance="fill" style="width: 100%">
+      <mat-label>Event rating:</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let rating of ['None',1,2,3,4,5,6]" [value]="commentRating">
+          {{rating}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <br/>
-    <button class="btn btn-success btn-md pull-right" (click)='saveComment(commentInput)'>Add comment</button>
+    <button class="btn btn-success btn-md pull-right" (click)='saveComment(commentInput, commentRating)'>Add comment
+    </button>
   </form>
 </div>

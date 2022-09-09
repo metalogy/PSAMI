@@ -87,6 +87,13 @@
       <hr/>
 
       <h2>Leave a comment</h2>
+      <div
+        class="alert alert-danger"
+        role="alert"
+        *ngIf="commentErrorVisible"
+      >
+        Comment mustn't be empty !
+      </div>
       <textarea class="form-control"
                 placeholder="Your Comment"
                 name="commentInput"

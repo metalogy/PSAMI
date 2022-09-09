@@ -44,6 +44,8 @@ export class EventPageComponent implements OnInit {
 
   eventComments = [];
   commentInput = '';
+  commentRating = 'None';
+  commentErrorVisible = false;
 
   eventParticipants$: Observable<User>[] = [];
 
@@ -91,17 +93,21 @@ export class EventPageComponent implements OnInit {
     this.eventComments = [];
     this.eventService.getEventComments(eventId).subscribe(comments => {
       comments.forEach(comment => {
-        debugger;
         this.eventComments.push(new UserComment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at)));
       })
     });
   }
 
-  saveComment(comment: string): void {
-    this.eventService.saveEventComment(this.id, comment).subscribe(value => {
-      this.getEventComments(this.id);
-    });
-    this.commentInput = '';
+  saveComment(comment: string, rating: string): void {
+    if (comment === '') {
+      this.commentErrorVisible = true;
+    } else {
+      this.commentErrorVisible = false;
+      this.eventService.saveEventComment(this.id, comment, rating).subscribe(value => {
+        this.getEventComments(this.id);
+      });
+      this.commentInput = '';
+    }
   }
 
   getParticipants(eventId: number) {
@@ -143,5 +149,9 @@ export class EventPageComponent implements OnInit {
       debugger;
       window.location.reload();
     });
+  }
+
+  isNumber(rating: number) {
+    return !Number.isNaN(rating);
   }
 }
