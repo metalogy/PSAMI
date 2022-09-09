@@ -34,21 +34,18 @@ export class AddEventComponent implements OnInit {
   }
 
   onSubmit() {
-    this.eventService.addEvent(this.eventData).subscribe({
-      next: data => {
-        this.isSuccessful = true;
-        this.isAddingEventFailed = false;
-        //todo redirect
-      },
-      error: err => {
-        this.errorMessage = err.error.message;
-        this.isAddingEventFailed = true;
-      }
-    });
+    let response = this.eventService.addEvent(this.eventData);
+    if (response.includes('created_at')) {
+      this.isSuccessful = true;
+      this.isAddingEventFailed = false; //todo redirect
+    } else {
+      this.errorMessage = response;
+      this.isAddingEventFailed = true;
+    }
   }
 
   handleFileInput(event) {
-    this.getBase64(event);
+    this.eventData.photo = event.target.files[0];
   }
 
   getBase64(event) {

@@ -18,7 +18,6 @@ export class UserService {
     });
 
     return this.http.get(API + 'user/' + id, {headers}) //todo? wysyłanie hasła z powrotem na front;
-    // todo coordsy
   }
 
   getProfileComments(id: number): Observable<any> {
@@ -35,4 +34,24 @@ export class UserService {
     return this.http.post(API + 'profile_comments/', {"text": comment, "user_id": userId}, {headers});
   }
 
+  updateProfile(id: number, userData: any): Observable<any> {
+    return this.http.put(API + 'user/' + id, userData);
+  }
+
+  updateProfilePhoto(photo: any): string {
+    const file = new FormData();
+    if (photo != null) {
+      file.append('file', photo, photo.name);
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('PUT', API + 'user/uploadfile/', false);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this.tokenStorageService.getToken());
+    xhr.send(file);
+    return xhr.responseText;
+  }
+
+  deleteProfileComment(commentId: number) {
+    return this.http.delete(API + 'profile_comments/?comment_id=' + commentId);
+  }
 }

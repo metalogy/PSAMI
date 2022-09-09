@@ -45,6 +45,14 @@
     </google-map>
   </div>
 
+  <div>
+    <br>
+    <button class="btn btn-warning btn-md mr-1 float-right" *ngIf="profileOwner" (click)='editEvent()'>Edit
+      profile
+    </button>
+    <br>
+    <br>
+  </div>
   <hr/>
 
   <div class="form-group">
@@ -56,15 +64,24 @@
           <div>
             <ul class="list-group">
               <li class="list-group-item" *ngFor="let comment of userComments">
-                <div class="row" style="float: right; font-size: 12px; margin:0px">
-                  {{comment.date.toDateString()}}
+
+                <div style="display: inline">
+                  <div class="rowComment" style="float: right; font-size: 12px; margin:0px">
+                    {{comment.date.toDateString()}}
+                  </div>
+                  <div class="rowComment"
+                       style="font-size: 14px; margin-top:10px; margin-bottom:10px; overflow-wrap: break-word;">
+                    {{ comment.comment }}
+                    <br>
+                  </div>
+                  <div class="rowComment" style="float: right;  margin:0px">
+                    <i>by <b><a href="/profile/{{comment.user}}">{{comment.user}} </a></b></i>
+                  </div>
+                  <button style="float: right" *ngIf="comment.user===this.userId"
+                          class="btn btn-danger btn-md mr-1 float-right" (click)='deleteComment(comment.id)'>Delete
+                  </button>
                 </div>
-                <div class="row" style="font-size: 14px; margin-top:10px; margin-bottom:10px">
-                  {{ comment.comment }}
-                </div>
-                <div class="row" style="float: right;  margin:0px">
-                  <i>by <b><a href="/profile/{{comment.user}}">{{comment.user}} </a></b></i>
-                </div>
+
               </li>
             </ul>
           </div>

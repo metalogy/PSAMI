@@ -94,13 +94,13 @@
   <button class="btn btn-danger btn-md  mr-1 float-right" *ngIf="isCreator" (click)='deleteEvent()'>Delete
     event
   </button>
-  <button class="btn btn-warning btn-md mr-1 float-right" *ngIf="isCreator">Edit
+  <button class="btn btn-warning btn-md mr-1 float-right" *ngIf="isCreator" (click)='editEvent()'>Edit
     event
   </button>
-  <button class="btn btn-success btn-md mr-1 float-right" *ngIf="!isParticipant" (click)='joinEvent()'>
+  <button class="btn btn-success btn-md mr-1 float-right" *ngIf="!isUserParticipant" (click)='joinEvent()'>
     Join event
   </button>
-  <button class="btn btn-primary btn-md mr-1 float-right" *ngIf="isParticipant" (click)='leaveEvent()'>
+  <button class="btn btn-primary btn-md mr-1 float-right" *ngIf="isUserParticipant" (click)='leaveEvent()'>
     Leave event
   </button>
   <br>
@@ -165,19 +165,28 @@
         <div>
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let comment of eventComments">
-              <div class="row" style="float: right; font-size: 12px; margin:0px">
-                {{comment.date.toDateString()}}
+
+              <div style="display: inline">
+                <div class="row" style="float: right; font-size: 12px; margin:0px">
+                  {{comment.date.toDateString()}}
+                </div>
+                <div class="row"
+                     style="font-size: 14px; margin-top:10px; margin-bottom:10px; overflow-wrap: break-word;">
+                  {{ comment.comment }}
+                  <br>
+                </div>
+                <div class="row" style="float: right;  margin:0px">
+                  <i>by <b><a href="/profile/{{comment.user}}">{{comment.user}} </a></b></i>
+                </div>
+                <div class="row" style="float: right;  margin:0px">
+                  <i *ngIf="isNumber(comment.rating)">Rating: <b>{{comment.rating}}/6</b></i>
+                  <i *ngIf="!isNumber(comment.rating)">Rating: <b>no rating</b></i>
+                </div>
+                <button style="float: right" *ngIf="comment.user===this.userId"
+                        class="btn btn-danger btn-md mr-1 float-right" (click)='deleteComment(comment.id)'>Delete
+                </button>
               </div>
-              <div class="row" style="font-size: 14px; margin-top:10px; margin-bottom:10px">
-                {{ comment.comment }}
-              </div>
-              <div class="row" style="float: right;  margin:0px">
-                <i *ngIf="isNumber(comment.rating)">Rating: <b>{{comment.rating}}/6</b></i>
-                <i *ngIf="!isNumber(comment.rating)">Rating: <b>no rating</b></i>
-              </div>
-              <div class="row" style="float: right;  margin:0px">
-                <i>by <b><a href="/profile/{{comment.user}}">{{comment.user}} </a></b></i>
-              </div>
+
             </li>
           </ul>
         </div>
@@ -205,8 +214,8 @@
               [(ngModel)]="commentInput"></textarea>
     <mat-form-field appearance="fill" style="width: 100%">
       <mat-label>Event rating:</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let rating of ['None',1,2,3,4,5,6]" [value]="commentRating">
+      <mat-select [(value)]="commentRating">
+        <mat-option *ngFor="let rating of ['None',1,2,3,4,5,6]" value="{{rating}}">
           {{rating}}
         </mat-option>
       </mat-select>

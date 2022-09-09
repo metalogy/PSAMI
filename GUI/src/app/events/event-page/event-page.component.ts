@@ -12,9 +12,9 @@ import {Observable} from 'rxjs';
   styleUrls: ['./event-page.component.css']
 })
 export class EventPageComponent implements OnInit {
-  private id: number;
+  private eventId: number;
 
-  zoom = 20;
+  zoom = 15;
   options: google.maps.MapOptions = {
     zoomControl: true,
     scrollwheel: true,
@@ -49,8 +49,9 @@ export class EventPageComponent implements OnInit {
 
   eventParticipants$: Observable<User>[] = [];
 
-  isParticipant = false;
+  isUserParticipant = false;
   isCreator = null;
+  userId: number;
 
   public displayedColumns = ['index', 'username', 'firstName', 'lastName', 'dob'];
 
@@ -60,10 +61,11 @@ export class EventPageComponent implements OnInit {
   ngOnInit(): void {
     //todo? jakaś notyfkiacja w przypadku błędu
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      this.getEventData(this.id);
-      this.getEventComments(this.id);
-      this.getParticipants(this.id);
+      this.eventId = +params['id'];
+      this.getEventData(this.eventId);
+      this.getEventComments(this.eventId);
+      this.getParticipants(this.eventId);
+      this.userId = this.tokenStorageService.getUserId();
     });
   }
 
@@ -93,7 +95,7 @@ export class EventPageComponent implements OnInit {
     this.eventComments = [];
     this.eventService.getEventComments(eventId).subscribe(comments => {
       comments.forEach(comment => {
-        this.eventComments.push(new Comment(comment.writer_id, comment.text, new Date(comment.created_at), comment.rating,));
+        this.eventComments.push(new Comment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at), comment.rating));
       })
     });
   }
@@ -103,8 +105,8 @@ export class EventPageComponent implements OnInit {
       this.commentErrorVisible = true;
     } else {
       this.commentErrorVisible = false;
-      this.eventService.saveEventComment(this.id, comment, rating).subscribe(value => {
-        this.getEventComments(this.id);
+      this.eventService.saveEventComment(this.eventId, comment, rating).subscribe(value => {
+        this.getEventComments(this.eventId);
       });
       this.commentInput = '';
     }
@@ -113,6 +115,7 @@ export class EventPageComponent implements OnInit {
   getParticipants(eventId: number) {
     this.eventService.getParticipants(eventId).subscribe(participants => {
       this.eventParticipants$ = participants;
+      this.isUserParticipant = participants.filter(participant => participant.eventId === this.tokenStorageService.getUserId()).length > 0 ? true : false;
     });
   }
 
@@ -121,21 +124,31 @@ export class EventPageComponent implements OnInit {
   }
 
   joinEvent() {
-    this.eventService.joinEvent(this.id).subscribe(response => {
+    this.eventService.joinEvent(this.eventId).subscribe(response => {
       window.location.reload();
     })
   }
 
   leaveEvent() {
-    this.eventService.leaveEvent(this.id).subscribe(response => {
+    this.eventService.leaveEvent(this.eventId).subscribe(response => {
       window.location.reload();
     })
   }
 
   deleteEvent() {
-    this.eventService.deleteEvent(this.id).subscribe(response => {
+    this.eventService.deleteEvent(this.eventId).subscribe(response => {
       this.router.navigateByUrl("/events");
     })
+  }
+
+  editEvent() {
+    this.router.navigateByUrl(`/event/${this.eventId}/edit`);
+  }
+
+  deleteComment(commentId: number) {
+    this.eventService.deleteEventComment(commentId).subscribe(response => {
+      window.location.reload();
+    });
   }
 
   isNumber(rating: number) {
