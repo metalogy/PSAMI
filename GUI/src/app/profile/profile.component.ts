@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {UserComment} from "../models/user-comment";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../_services/user.service";
 import {TokenStorageService} from "../_services/token-storage.service";
 
@@ -13,7 +13,7 @@ import {TokenStorageService} from "../_services/token-storage.service";
 export class ProfileComponent implements OnInit {
   commentField = document.getElementById('comment');
 
-  zoom = 20;
+  zoom = 15;
   options: google.maps.MapOptions = {
     zoomControl: true,
     scrollwheel: true,
@@ -38,8 +38,9 @@ export class ProfileComponent implements OnInit {
 
   userComments = [];
   commentInput = '';
+  profileOwner: boolean;
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private tokenStorageService: TokenStorageService) {
+  constructor(private route: ActivatedRoute, private userService: UserService, private tokenStorageService: TokenStorageService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -49,11 +50,17 @@ export class ProfileComponent implements OnInit {
 
       this.getProfileData(this.id);
       this.getProfileComments(this.id);
+      this.isUserProfileOwner();
     });
+  }
+
+  isUserProfileOwner() {
+    this.profileOwner = this.id === this.tokenStorageService.getUserId();
   }
 
   getProfileData(profileId: number) {
     this.userService.getProfile(profileId).subscribe(userData => {
+      debugger;
       this.userData.email = userData.email;
       this.userData.username = userData.username;
       this.userData.firstName = userData.first_name;
@@ -79,7 +86,7 @@ export class ProfileComponent implements OnInit {
     this.userService.getProfileComments(profileId).subscribe(comments => {
       comments.forEach(comment => {
         // todo nick usera
-        this.userComments.push(new UserComment(comment.writer_id, comment.text, new Date(comment.created_at)));
+        this.userComments.push(new UserComment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at)));
       })
     });
   }
@@ -89,5 +96,9 @@ export class ProfileComponent implements OnInit {
       this.getProfileComments(this.id);
     });
     this.commentInput = '';
+  }
+
+  editEvent() {
+    this.router.navigateByUrl(`/profile/${this.id}/edit`);
   }
 }

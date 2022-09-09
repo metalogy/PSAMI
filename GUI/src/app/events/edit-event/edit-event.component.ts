@@ -54,7 +54,11 @@ export class EditEventComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  handleFileInput(event) {
+    this.eventData.photo = event.target.files[0];
+  }
+
+  updateEventData() {
     this.eventService.editEvent(this.id, this.eventData).subscribe({
       next: data => {
         this.isSuccessful = true;
@@ -66,6 +70,25 @@ export class EditEventComponent implements OnInit {
         this.isEditingEventFailed = true;
       }
     });
+  }
+
+  updateEventDataAndPhoto() {
+    let photo_response = this.eventService.updateEventPhoto(this.id, this.eventData.photo);
+    debugger;
+    if (photo_response.includes('created_at')) {
+      this.updateEventData()
+    } else {
+      this.errorMessage = photo_response;
+      this.isEditingEventFailed = true;
+    }
+  }
+
+  onSubmit() {
+    if (this.eventData.photo) {
+      this.updateEventDataAndPhoto();
+    } else {
+      this.updateEventData();
+    }
   }
 
   cancelEdit() {

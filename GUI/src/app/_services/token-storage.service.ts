@@ -63,8 +63,4 @@ export class TokenStorageService {
   public getUserAge(): any {
     return this.userData.age;
   }
-
-  public getUserCity(): string {
-    return this.userData.city; //todo
-  }
 }

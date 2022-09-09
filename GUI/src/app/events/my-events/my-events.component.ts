@@ -1,14 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {EventService} from "../../_services/event.service";
 import {DatePipe} from "@angular/common";
+import {EventService} from "../../_services/event.service";
+import {TokenStorageService} from "../../_services/token-storage.service";
 
 @Component({
-  selector: 'app-event-browser',
-  templateUrl: './event-browser.component.html',
-  styleUrls: ['./event-browser.component.css']
+  selector: 'app-my-events',
+  templateUrl: './my-events.component.html',
+  styleUrls: ['./my-events.component.css']
 })
-export class EventBrowserComponent implements OnInit {
+export class MyEventsComponent implements OnInit {
 
   events$: Observable<Event>[] = [];
 
@@ -18,7 +19,7 @@ export class EventBrowserComponent implements OnInit {
   eventDate = null;
   showOutdatedEvents = false;
 
-  constructor(private datePipe: DatePipe, private eventService: EventService) {
+  constructor(private datePipe: DatePipe, private eventService: EventService, private tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
@@ -29,13 +30,15 @@ export class EventBrowserComponent implements OnInit {
     if (this.showOutdatedEvents) {
       this.eventService.getEvents().subscribe(events => {
         this.events$ = events.filter(filteredEvent =>
-          filteredEvent.is_private === false
+          filteredEvent.is_private === false &&
+          filteredEvent.user_id === this.tokenStorageService.getUserId()
         );
       })
     } else {
       this.eventService.getEvents().subscribe(events => {
         this.events$ = events.filter(filteredEvent =>
           filteredEvent.is_private === false && this.isEventDateFuture(filteredEvent.date)
+          && filteredEvent.user_id === this.tokenStorageService.getUserId()
         );
       })
     }
@@ -58,11 +61,13 @@ export class EventBrowserComponent implements OnInit {
   searchEvents() {
     if (this.showOutdatedEvents) {
       this.eventService.searchEvents(this.eventName, this.datePipe.transform(this.eventDate, "yyyy-MM-dd")).subscribe(events => {
-        this.events$ = events.filter(filteredEvent => filteredEvent.is_private === false);
+        this.events$ = events.filter(filteredEvent => filteredEvent.is_private === false && filteredEvent.user_id === this.tokenStorageService.getUserId()
+        );
       })
     } else {
       this.eventService.searchEvents(this.eventName, this.datePipe.transform(this.eventDate, "yyyy-MM-dd")).subscribe(events => {
-        this.events$ = events.filter(filteredEvent => filteredEvent.is_private === false && this.isEventDateFuture(filteredEvent.date));
+        this.events$ = events.filter(filteredEvent => filteredEvent.is_private === false && this.isEventDateFuture(filteredEvent.date) && filteredEvent.user_id === this.tokenStorageService.getUserId()
+        );
       })
     }
   }

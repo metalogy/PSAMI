@@ -18,42 +18,46 @@ export class EventService {
     'X-Token': this.tokenStorageService.getToken(),
   });
 
-  addEvent(eventData: any): Observable<any> {
-    return this.http.post(API_EVENT, eventData.photo,
-      {
-        params:
-          {
-            name: eventData.eventName,
-            description: eventData.description,
-            date: eventData.date,
-            status: eventData.status,
-            city: eventData.city,
-            address: eventData.address,
-            is_private: eventData.isPrivate,
-            is_reserved: eventData.isReserved,
-            min_users: eventData.minUsers,
-            max_users: eventData.maxUsers,
-            suggested_age: eventData.suggestedAge,
-          },
-        headers: this.headers
-      }
-    );
+  addEvent(eventData: any) {
+    const file = new FormData();
+    if (eventData.photo != null) {
+      file.append('file', eventData.photo, eventData.photo.name);
+    }
+
+    let pathParams =
+      '?name=' + eventData.eventName +
+      '&description=' + eventData.description +
+      '&date=' + eventData.date +
+      '&status=' + eventData.status +
+      '&city=' + eventData.city +
+      '&address=' + eventData.address +
+      '&is_private=' + eventData.isPrivate +
+      '&is_reserved=' + eventData.isReserved +
+      '&min_users=' + eventData.minUsers +
+      '&max_users=' + eventData.maxUsers +
+      '&suggested_age=' + eventData.suggestedAge;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', API_EVENT + pathParams, false);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this.tokenStorageService.getToken());
+    xhr.send(file);
+    return xhr.responseText;
   }
 
   editEvent(eventId: number, eventData: any): Observable<any> {
     return this.http.put(API_EVENT + eventId,
       {
-            name: eventData.eventName,
-            description: eventData.description,
-            date: eventData.date,
-            status: 'status',
-            city: eventData.city,
-            address: eventData.address,
-            is_private: eventData.isPrivate,
-            is_reserved: eventData.isReserved,
-            min_users: eventData.minUsers,
-            max_users: eventData.maxUsers,
-            suggested_age: eventData.suggestedAge,
+        name: eventData.eventName,
+        description: eventData.description,
+        date: eventData.date,
+        status: 'status',
+        city: eventData.city,
+        address: eventData.address,
+        is_private: eventData.isPrivate,
+        is_reserved: eventData.isReserved,
+        min_users: eventData.minUsers,
+        max_users: eventData.maxUsers,
+        suggested_age: eventData.suggestedAge,
       },
       {headers: this.headers}
     );
@@ -91,6 +95,11 @@ export class EventService {
     }, {headers: this.headers});//todo ocena?
   }
 
+  deleteEventComment(commentId: number) {
+    debugger;
+    return this.http.delete(API_EVENT_COMMENTS + '?comment_id=' + commentId);
+  }
+
   getParticipants(eventId: number): Observable<any> {
     return this.http.get(API_EVENT + 'participants/?event_id=' + eventId, {headers: this.headers});
   }
@@ -105,5 +114,18 @@ export class EventService {
 
   deleteEvent(eventId: number): Observable<any> {
     return this.http.delete(API_EVENT + '?event_id=' + eventId, {headers: this.headers});
+  }
+
+  updateEventPhoto(eventId: number, photo: any) {
+    const file = new FormData();
+    if (photo != null) {
+      file.append('file', photo, photo.name);
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', API_EVENT + 'uploadfile/?event_id=' + eventId, false);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + this.tokenStorageService.getToken());
+    xhr.send(file);
+    return xhr.responseText;
   }
 }

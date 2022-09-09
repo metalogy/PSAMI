@@ -14,7 +14,7 @@ import {Observable} from 'rxjs';
 export class EventPageComponent implements OnInit {
   private id: number;
 
-  zoom = 20;
+  zoom = 15;
   options: google.maps.MapOptions = {
     zoomControl: true,
     scrollwheel: true,
@@ -52,7 +52,7 @@ export class EventPageComponent implements OnInit {
 
   public displayedColumns = ['index', 'username', 'firstName', 'lastName', 'dob'];
 
-  constructor(private route: ActivatedRoute, private eventService: EventService, private tokenStorageService: TokenStorageService, private router: Router) {
+  constructor(private route: ActivatedRoute, private eventService: EventService, public tokenStorageService: TokenStorageService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -91,7 +91,8 @@ export class EventPageComponent implements OnInit {
     this.eventComments = [];
     this.eventService.getEventComments(eventId).subscribe(comments => {
       comments.forEach(comment => {
-        this.eventComments.push(new UserComment(comment.writer_id, comment.text, new Date(comment.created_at)));
+        debugger;
+        this.eventComments.push(new UserComment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at)));
       })
     });
   }
@@ -134,5 +135,13 @@ export class EventPageComponent implements OnInit {
 
   editEvent() {
     this.router.navigateByUrl(`/event/${this.id}/edit`);
+  }
+
+  deleteComment(commentId: number) {
+    debugger;
+    this.eventService.deleteEventComment(commentId).subscribe(response => {
+      debugger;
+      window.location.reload();
+    });
   }
 }

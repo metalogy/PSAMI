@@ -1,15 +1,14 @@
-//todo informacja o błędym wprowadzeniu daty
-//todo formaty plików
 import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../_services/auth.service';
-import {types} from "@angular/compiler-cli/linker/babel/src/babel_core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {UserService} from "../../_services/user.service";
+import {AuthService} from "../../_services/auth.service";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.component.html',
+  styleUrls: ['./edit-profile.component.css']
 })
-export class RegisterComponent implements OnInit, AfterViewInit {
+export class EditProfileComponent implements OnInit, AfterViewInit {
 
   @ViewChild('search')
   public searchElementRef!: ElementRef;
@@ -17,7 +16,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   @ViewChild('googleMap')
   public map!: google.maps.Map;
   zoom = 15;
-  coords!: google.maps.LatLngLiteral;
+  userCoords!: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
     zoomControl: true,
     scrollwheel: true,
@@ -34,28 +33,38 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     password: null,
     age: null,
     city: null,
-    avatar: null
   };
 
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
 
-  startDate = new Date(1990, 1, 1); //todo
   showMarker = false;
   cityNotSelected = false;
+  id: number;
 
+  geocoder = new google.maps.Geocoder();
 
-  constructor(private authService: AuthService, private ngZone: NgZone) {
+  constructor(private route: ActivatedRoute, private authService: AuthService, private ngZone: NgZone, private userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.coords = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
+
+    this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      this.getUserData(this.id);
     });
+  }
+
+  getUserData(id: number): void {
+    this.userService.getProfile(id).subscribe(userData => {
+      this.userData.username = userData.username;
+      this.userData.first_name = userData.first_name;
+      this.userData.last_name = userData.last_name;
+      this.userData.email = userData.email;
+      this.userData.password = userData.password;
+      this.userData.age = userData.age;
+    })
   }
 
   ngAfterViewInit(): void {
@@ -80,7 +89,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
           return;
         }
 
-        this.coords = {
+        this.userCoords = {
           lat: place.geometry.location?.lat()!,
           lng: place.geometry.location?.lng()!,
         };
@@ -94,33 +103,41 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.userData.avatar = event.target.files[0];
   }
 
-  getBase64(event) {
-    let me = this;
-    let file = event.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      me.userData.avatar = reader.result;
-      console.log(reader.result);
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-  }
-
-  onSubmit(): void {
-    if (this.userData.city) {
-      let response = this.authService.register(this.userData)
-
-      if (response.includes('User has been created!')) {
-        this.isSuccessful = true;
+  updateUserData() {
+    this.userService.updateProfile(this.id, this.userData).subscribe(response => {
+      if (response.username) {
+        this.isSuccessful = true; //todo redirect i logout
         this.isSignUpFailed = false;
       } else {
         this.errorMessage = response;
         this.isSignUpFailed = true;
       }
+    });
+  }
+
+  updatePhotoAndUserData() {
+    let photo_response = this.userService.updateProfilePhoto(this.userData.avatar);
+    if (photo_response.includes('username')) {
+      this.updateUserData();
+    } else {
+      this.errorMessage = photo_response;
+      this.isSignUpFailed = true;
+    }
+  }
+
+  onSubmit(): void {
+    if (this.userData.city) {
+      if (this.userData.avatar) {
+        this.updatePhotoAndUserData();
+      } else {
+        this.updateUserData();
+      }
     } else {
       this.cityNotSelected = true;
     }
+  }
+
+  cancelEdit() {
+    this.router.navigateByUrl(`/profile/${this.id}`);
   }
 }

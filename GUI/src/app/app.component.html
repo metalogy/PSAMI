@@ -12,7 +12,7 @@
         <a href="/add-event" class="nav-link">Add event</a>
       </li>
       <li class="nav-item" *ngIf="tokenStorageService.getIsLoggedIn()">
-        <a href="/create-event" class="nav-link">My events</a>
+        <a href="/my-events" class="nav-link">My events</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="!tokenStorageService.getIsLoggedIn()">
