@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {UserComment} from "../models/user-comment";
+import {Comment} from "../models/comment";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../_services/user.service";
 import {TokenStorageService} from "../_services/token-storage.service";
@@ -34,12 +34,13 @@ export class ProfileComponent implements OnInit {
     profilePicturePath: null,
   };
 
-  id: number;
+  profileId: number;
 
   userComments = [];
   commentInput = '';
   profileOwner: boolean;
   commentErrorVisible = false;
+  userId: number;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private tokenStorageService: TokenStorageService, private router: Router) {
   }
@@ -47,16 +48,16 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     //todo? jakaś notyfkiacja w przypadku błędu
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-
-      this.getProfileData(this.id);
-      this.getProfileComments(this.id);
+      this.profileId = +params['id'];
+      this.getProfileData(this.profileId);
+      this.getProfileComments(this.profileId);
       this.isUserProfileOwner();
+      this.userId = this.tokenStorageService.getUserId();
     });
   }
 
   isUserProfileOwner() {
-    this.profileOwner = this.id === this.tokenStorageService.getUserId();
+    this.profileOwner = this.profileId === this.tokenStorageService.getUserId();
   }
 
   getProfileData(profileId: number) {
@@ -86,7 +87,7 @@ export class ProfileComponent implements OnInit {
     this.userService.getProfileComments(profileId).subscribe(comments => {
       comments.forEach(comment => {
         // todo nick usera
-        this.userComments.push(new UserComment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at)));
+        this.userComments.push(new Comment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at)));
       })
     });
   }
@@ -97,13 +98,19 @@ export class ProfileComponent implements OnInit {
     } else {
       this.commentErrorVisible = false;
       this.userService.saveProfileComments(this.tokenStorageService.getUserId(), comment).subscribe(value => {
-        this.getProfileComments(this.id);
+        this.getProfileComments(this.profileId);
       });
       this.commentInput = '';
     }
   }
 
   editEvent() {
-    this.router.navigateByUrl(`/profile/${this.id}/edit`);
+    this.router.navigateByUrl(`/profile/${this.profileId}/edit`);
+  }
+
+  deleteComment(commentId: number) {
+    this.userService.deleteProfileComment(commentId).subscribe(response => {
+      window.location.reload();
+    });
   }
 }

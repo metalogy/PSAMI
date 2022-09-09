@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from "../../_services/event.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UserComment} from "../../models/user-comment";
+import {Comment} from "../../models/comment";
 import {User} from "../../models/user";
 import {TokenStorageService} from "../../_services/token-storage.service";
 import {Observable} from 'rxjs';
@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
   styleUrls: ['./event-page.component.css']
 })
 export class EventPageComponent implements OnInit {
-  private id: number;
+  private eventId: number;
 
   zoom = 15;
   options: google.maps.MapOptions = {
@@ -51,19 +51,21 @@ export class EventPageComponent implements OnInit {
 
   isUserParticipant = false;
   isCreator = null;
+  userId: number;
 
   public displayedColumns = ['index', 'username', 'firstName', 'lastName', 'dob'];
 
-  constructor(private route: ActivatedRoute, private eventService: EventService, public tokenStorageService: TokenStorageService, private router: Router) {
+  constructor(private route: ActivatedRoute, private eventService: EventService, private tokenStorageService: TokenStorageService, private router: Router) {
   }
 
   ngOnInit(): void {
     //todo? jakaś notyfkiacja w przypadku błędu
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      this.getEventData(this.id);
-      this.getEventComments(this.id);
-      this.getParticipants(this.id);
+      this.eventId = +params['id'];
+      this.getEventData(this.eventId);
+      this.getEventComments(this.eventId);
+      this.getParticipants(this.eventId);
+      this.userId = this.tokenStorageService.getUserId();
     });
   }
 
@@ -93,7 +95,7 @@ export class EventPageComponent implements OnInit {
     this.eventComments = [];
     this.eventService.getEventComments(eventId).subscribe(comments => {
       comments.forEach(comment => {
-        this.eventComments.push(new UserComment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at)));
+        this.eventComments.push(new Comment(comment.id, comment.writer_id, comment.text, new Date(comment.created_at), comment.rating));
       })
     });
   }
@@ -103,8 +105,8 @@ export class EventPageComponent implements OnInit {
       this.commentErrorVisible = true;
     } else {
       this.commentErrorVisible = false;
-      this.eventService.saveEventComment(this.id, comment, rating).subscribe(value => {
-        this.getEventComments(this.id);
+      this.eventService.saveEventComment(this.eventId, comment, rating).subscribe(value => {
+        this.getEventComments(this.eventId);
       });
       this.commentInput = '';
     }
@@ -113,7 +115,7 @@ export class EventPageComponent implements OnInit {
   getParticipants(eventId: number) {
     this.eventService.getParticipants(eventId).subscribe(participants => {
       this.eventParticipants$ = participants;
-      this.isUserParticipant = participants.filter(participant => participant.id === this.tokenStorageService.getUserId()).length > 0 ? true : false;
+      this.isUserParticipant = participants.filter(participant => participant.eventId === this.tokenStorageService.getUserId()).length > 0 ? true : false;
     });
   }
 
@@ -122,31 +124,29 @@ export class EventPageComponent implements OnInit {
   }
 
   joinEvent() {
-    this.eventService.joinEvent(this.id).subscribe(response => {
+    this.eventService.joinEvent(this.eventId).subscribe(response => {
       window.location.reload();
     })
   }
 
   leaveEvent() {
-    this.eventService.leaveEvent(this.id).subscribe(response => {
+    this.eventService.leaveEvent(this.eventId).subscribe(response => {
       window.location.reload();
     })
   }
 
   deleteEvent() {
-    this.eventService.deleteEvent(this.id).subscribe(response => {
+    this.eventService.deleteEvent(this.eventId).subscribe(response => {
       this.router.navigateByUrl("/events");
     })
   }
 
   editEvent() {
-    this.router.navigateByUrl(`/event/${this.id}/edit`);
+    this.router.navigateByUrl(`/event/${this.eventId}/edit`);
   }
 
   deleteComment(commentId: number) {
-    debugger;
     this.eventService.deleteEventComment(commentId).subscribe(response => {
-      debugger;
       window.location.reload();
     });
   }

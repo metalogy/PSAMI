@@ -3,6 +3,13 @@
   width: inherit;
 }
 
+.rowComment {
+  display: inline;
+  margin-left: 0px;
+  width: 100% !important;
+  max-width: 100%;
+}
+
 .col {
   width: available;
   padding: 0px;

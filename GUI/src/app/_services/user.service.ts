@@ -50,4 +50,8 @@ export class UserService {
     xhr.send(file);
     return xhr.responseText;
   }
+
+  deleteProfileComment(commentId: number) {
+    return this.http.delete(API + 'profile_comments/?comment_id=' + commentId);
+  }
 }

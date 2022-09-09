@@ -92,11 +92,10 @@ export class EventService {
       "text": comment,
       "event_id": eventId,
       "rating": rating
-    }, {headers: this.headers});//todo ocena?
+    }, {headers: this.headers});
   }
 
   deleteEventComment(commentId: number) {
-    debugger;
     return this.http.delete(API_EVENT_COMMENTS + '?comment_id=' + commentId);
   }
 

@@ -74,7 +74,6 @@ export class EditEventComponent implements OnInit {
 
   updateEventDataAndPhoto() {
     let photo_response = this.eventService.updateEventPhoto(this.id, this.eventData.photo);
-    debugger;
     if (photo_response.includes('created_at')) {
       this.updateEventData()
     } else {
