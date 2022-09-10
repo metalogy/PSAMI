@@ -10,19 +10,23 @@ import {EventBrowserComponent} from "./events/event-browser/event-browser.compon
 import {EditEventComponent} from "./events/edit-event/edit-event.component";
 import {MyEventsComponent} from "./events/my-events/my-events.component";
 import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
+import {NotFoundComponent} from "./_helpers/not-found/not-found.component";
+import {NotAllowedComponent} from "./_helpers/not-allowed/not-allowed.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'profile/:id', component: ProfileComponent}, //todo pathparam nie znaleziono
+  {path: 'profile/:id', component: ProfileComponent},
   {path: 'add-event', component: AddEventComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'event/:id', component: EventPageComponent}, //todo pathparam nie znaleziono
+  {path: 'event/:id', component: EventPageComponent},
   {path: 'events', component: EventBrowserComponent},
-  {path: 'event/:id/edit', component: EditEventComponent}, //todo pathparam nie znaleziono
+  {path: 'event/:id/edit', component: EditEventComponent},
   {path: 'my-events', component: MyEventsComponent},
-  {path: 'profile/:id/edit', component: EditProfileComponent}, //todo pathparam nie znaleziono
+  {path: 'profile/:id/edit', component: EditProfileComponent},
+  {path: 'notfound', component: NotFoundComponent},
+  {path: 'notallowed', component: NotAllowedComponent}
 ];
 
 @NgModule({

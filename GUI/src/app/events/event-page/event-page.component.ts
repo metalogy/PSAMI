@@ -27,7 +27,7 @@ export class EventPageComponent implements OnInit {
     eventName: null,
     description: null,
     date: null,
-    status: null, //enum todo?
+    status: null,
     city: null,
     coords: null,
     address: null,
@@ -59,7 +59,6 @@ export class EventPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //todo? jakaś notyfkiacja w przypadku błędu
     this.route.params.subscribe(params => {
       this.eventId = +params['id'];
       this.getEventData(this.eventId);
@@ -136,9 +135,11 @@ export class EventPageComponent implements OnInit {
   }
 
   deleteEvent() {
-    this.eventService.deleteEvent(this.eventId).subscribe(response => {
-      this.router.navigateByUrl("/events");
-    })
+    if (confirm("Are you sure that, you want to delete this event?")) {
+      this.eventService.deleteEvent(this.eventId).subscribe(response => {
+        this.router.navigateByUrl("/events");
+      })
+    }
   }
 
   editEvent() {
@@ -146,9 +147,11 @@ export class EventPageComponent implements OnInit {
   }
 
   deleteComment(commentId: number) {
-    this.eventService.deleteEventComment(commentId).subscribe(response => {
-      window.location.reload();
-    });
+    if (confirm("Are you sure that, you want to delete your comment?")) {
+      this.eventService.deleteEventComment(commentId).subscribe(response => {
+        window.location.reload();
+      });
+    }
   }
 
   isNumber(rating: number) {

@@ -41,7 +41,6 @@ export class TokenStorageService {
   }
 
   public saveUserData(userData: any): void {
-    //todo
     localStorage.setItem("isLoggedIn", "true")
     localStorage.setItem("userId", userData.user.id)
     localStorage.setItem("username", userData.user.username)

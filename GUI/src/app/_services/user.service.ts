@@ -54,4 +54,8 @@ export class UserService {
   deleteProfileComment(commentId: number) {
     return this.http.delete(API + 'profile_comments/?comment_id=' + commentId);
   }
+
+  deleteProfile(userId: number) {
+    return this.http.delete(API + 'user/?user_id=' + userId);
+  }
 }

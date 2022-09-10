@@ -31,11 +31,6 @@ export class AuthService {
   }
 
   register(userData: any) {
-    const file = new FormData();
-    if (userData.avatar != null) {
-      file.append('file', userData.avatar, userData.avatar.name);
-    }
-
     let pathParams =
       '?username=' + userData.username +
       '&first_name=' + userData.first_name +
@@ -47,7 +42,15 @@ export class AuthService {
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', API + 'user/' + pathParams, false);
-    xhr.send(file);
+
+    if (userData.avatar != null) {
+      const file = new FormData();
+      file.append('file', userData.avatar, userData.avatar.name);
+      xhr.send(file);
+    } else {
+      xhr.send();
+    }
+
     return xhr.responseText;
   }
 

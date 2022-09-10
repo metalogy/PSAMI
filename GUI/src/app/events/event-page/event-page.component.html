@@ -13,9 +13,6 @@
 
   <div>
     <h2>Event time:</h2>
-    <!--    <input matInput type="datetime-local" [(ngModel)]="eventData.date" name="date"-->
-    <!--           disabled/>-->
-    <!--    todo-->
     <div style="font-weight: bold; font-style: italic">
       {{eventData.date.toDateString()}}
     </div>
@@ -212,6 +209,7 @@
               placeholder="Your Comment"
               name="commentInput"
               [(ngModel)]="commentInput"></textarea>
+    <br>
     <mat-form-field appearance="fill" style="width: 100%">
       <mat-label>Event rating:</mat-label>
       <mat-select [(value)]="commentRating">

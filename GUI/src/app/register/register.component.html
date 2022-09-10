@@ -18,8 +18,8 @@
           required
           #username="ngModel"
         />
-        <div class="alert-danger" *ngIf="username.errors && f.submitted">
-          <div *ngIf="username.errors['required']">Username is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="username.errors && f.submitted">
+          <div *ngIf="username.errors['required']">Username is required!</div>
         </div>
       </div>
 
@@ -35,8 +35,8 @@
           email
           #email="ngModel"
         />
-        <div class="alert-danger" *ngIf="email.errors && f.submitted">
-          <div *ngIf="email.errors['required']">Email is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="email.errors && f.submitted">
+          <div *ngIf="email.errors['required']">Email is required!</div>
           <div *ngIf="email.errors['email']">
             Email must be a valid email address
           </div>
@@ -55,8 +55,8 @@
           minlength="6"
           #password="ngModel"
         />
-        <div class="alert-danger" *ngIf="password.errors && f.submitted">
-          <div *ngIf="password.errors['required']">Password is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="password.errors && f.submitted">
+          <div *ngIf="password.errors['required']">Password is required!</div>
           <div *ngIf="password.errors['minlength']">
             Password must be at least 6 characters
           </div>
@@ -74,8 +74,8 @@
           required
           #firstName="ngModel"
         />
-        <div class="alert-danger" *ngIf="firstName.errors && f.submitted">
-          <div *ngIf="firstName.errors['required']">First name is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="firstName.errors && f.submitted">
+          <div *ngIf="firstName.errors['required']">First name is required!</div>
         </div>
       </div>
 
@@ -90,8 +90,8 @@
           required
           #lastName="ngModel"
         />
-        <div class="alert-danger" *ngIf="lastName.errors && f.submitted">
-          <div *ngIf="lastName.errors['required']">Last name is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="lastName.errors && f.submitted">
+          <div *ngIf="lastName.errors['required']">Last name is required!</div>
         </div>
       </div>
 
@@ -104,8 +104,8 @@
           <mat-datepicker #datePicker disabled="false" [startAt]="startDate"></mat-datepicker>
         </div>
       </div>
-      <div class="alert-danger" *ngIf="dob.errors && f.submitted">
-        <div *ngIf="dob.errors['required']">Date of birth is required</div>
+      <div class="alert alert-danger" role="alert" *ngIf="dob.errors && f.submitted">
+        <div *ngIf="dob.errors['required']">Date of birth is required!</div>
       </div>
 
 
@@ -134,7 +134,8 @@
           </google-map>
         </div>
       </div>
-      <div class="alert-danger" *ngIf="(userData.city === null || userData.city === undefined) && f.submitted">
+      <div class="alert alert-danger" role="alert"
+           *ngIf="(userData.city === null || userData.city === undefined) && f.submitted">
         <div *ngIf="(userData.city === null || userData.city === undefined) && f.submitted">Selecting your location is
           required
         </div>

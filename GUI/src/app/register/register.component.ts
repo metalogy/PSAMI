@@ -1,8 +1,5 @@
-//todo informacja o błędym wprowadzeniu daty
-//todo formaty plików
 import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../_services/auth.service';
-import {types} from "@angular/compiler-cli/linker/babel/src/babel_core";
 
 @Component({
   selector: 'app-register',
@@ -115,6 +112,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       if (response.includes('User has been created!')) {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
+        setTimeout(
+          function () {
+            window.location.href = "/login";
+          }, 2500);
       } else {
         this.errorMessage = response;
         this.isSignUpFailed = true;

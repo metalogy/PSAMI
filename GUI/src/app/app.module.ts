@@ -25,6 +25,8 @@ import { EditEventComponent } from './events/edit-event/edit-event.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { MyEventsComponent } from './events/my-events/my-events.component';
 import {MatSelectModule} from "@angular/material/select";
+import { NotFoundComponent } from './_helpers/not-found/not-found.component';
+import { NotAllowedComponent } from './_helpers/not-allowed/not-allowed.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import {MatSelectModule} from "@angular/material/select";
     EditEventComponent,
     EditProfileComponent,
     MyEventsComponent,
+    NotFoundComponent,
+    NotAllowedComponent,
   ],
   imports: [
     BrowserModule,

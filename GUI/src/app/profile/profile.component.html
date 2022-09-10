@@ -47,7 +47,12 @@
 
   <div>
     <br>
-    <button class="btn btn-warning btn-md mr-1 float-right" *ngIf="profileOwner" (click)='editEvent()'>Edit
+    <button class="btn btn-danger btn-md mr-1 float-right" style="width: 120px" *ngIf="profileOwner"
+            (click)='deleteProfile()'>Delete
+      profile
+    </button>
+    <button class="btn btn-warning btn-md mr-1 float-right" style="width: 120px" *ngIf="profileOwner"
+            (click)='editProfile()'>Edit
       profile
     </button>
     <br>

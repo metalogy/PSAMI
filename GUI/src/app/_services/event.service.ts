@@ -19,11 +19,6 @@ export class EventService {
   });
 
   addEvent(eventData: any) {
-    const file = new FormData();
-    if (eventData.photo != null) {
-      file.append('file', eventData.photo, eventData.photo.name);
-    }
-
     let pathParams =
       '?name=' + eventData.eventName +
       '&description=' + eventData.description +
@@ -40,7 +35,15 @@ export class EventService {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', API_EVENT + pathParams, false);
     xhr.setRequestHeader('Authorization', 'Bearer ' + this.tokenStorageService.getToken());
-    xhr.send(file);
+
+    if (eventData.photo != null) {
+      const file = new FormData();
+      file.append('file', eventData.photo, eventData.photo.name);
+      xhr.send(file);
+    } else {
+      xhr.send();
+    }
+
     return xhr.responseText;
   }
 
@@ -75,11 +78,11 @@ export class EventService {
     if (eventName != '' && eventDate != null) {
       return this.http.get(API_EVENT + '?name=' + eventName + '?date=' + eventDate, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
     } else if (eventName != '') {
-      return this.http.get(API_EVENT + '?name=' + eventName, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
+      return this.http.get(API_EVENT + '?name=' + eventName, {headers: this.headers})
     } else if (eventDate != null) {
-      return this.http.get(API_EVENT + '?date=' + eventDate, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
+      return this.http.get(API_EVENT + '?date=' + eventDate, {headers: this.headers})
     } else {
-      return this.http.get(API_EVENT, {headers: this.headers}) //todo? wysukiwanie działa dziwnie
+      return this.http.get(API_EVENT, {headers: this.headers})
     }
   }
 
