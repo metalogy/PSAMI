@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
       this.userData.username = userData.username;
       this.userData.firstName = userData.first_name;
       this.userData.lastName = userData.last_name;
-      this.userData.dob = new FormControl(new Date(userData.age));
+      this.userData.dob = new Date(userData.age);
       this.userData.profilePicturePath = '../../assets/' + userData.profile_picture;
       this.userData.city = userData.city;
 
