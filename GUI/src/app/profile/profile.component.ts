@@ -62,11 +62,12 @@ export class ProfileComponent implements OnInit {
 
   getProfileData(profileId: number) {
     this.userService.getProfile(profileId).subscribe(userData => {
+      this.userData.id = userData.id;
       this.userData.email = userData.email;
       this.userData.username = userData.username;
       this.userData.firstName = userData.first_name;
       this.userData.lastName = userData.last_name;
-      this.userData.dob = new FormControl(new Date(userData.age));
+      this.userData.dob = new Date(userData.age);
       this.userData.profilePicturePath = '../../assets/' + userData.profile_picture;
       this.userData.city = userData.city;
 
@@ -104,13 +105,24 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  editEvent() {
+  editProfile() {
     this.router.navigateByUrl(`/profile/${this.profileId}/edit`);
   }
 
   deleteComment(commentId: number) {
-    this.userService.deleteProfileComment(commentId).subscribe(response => {
-      window.location.reload();
-    });
+    if (confirm("Are you sure that, you want to delete your comment?")) {
+      this.userService.deleteProfileComment(commentId).subscribe(response => {
+        window.location.reload();
+      });
+    }
+  }
+
+  deleteProfile() {
+    if (confirm("Are you sure that, you want to delete your profile?")) {
+      this.userService.deleteProfile(this.userData.id).subscribe(response => {
+        this.tokenStorageService.signOut();
+        window.location.href = "/login";
+      })
+    }
   }
 }

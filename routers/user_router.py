@@ -27,7 +27,7 @@ def create_user(
         password: str,
         age: datetime.date,
         city: str,
-        file: Optional[UploadFile] = File(...),
+        file: Optional[UploadFile] = File(None),
         db: Session = Depends(get_db),
 ):
     return user_repository.create_user(
@@ -47,7 +47,7 @@ def update(
 
 @router.delete("/", status_code=status.HTTP_200_OK)
 def delete(user_id: int, db: Session = Depends(get_db), mail: str = Depends(oauth2.get_current_user)):
-    return user_repository.delete(db, user_id, mail)
+    return user_repository.delete(db, mail)
 
 
 @router.put("/uploadfile/")

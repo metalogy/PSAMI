@@ -18,8 +18,8 @@
           required
           #eventName="ngModel"
         />
-        <div class="alert-danger" *ngIf="eventName.errors && f.submitted">
-          <div *ngIf="eventName.errors['required']">Name of event is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="eventName.errors && f.submitted">
+          <div *ngIf="eventName.errors['required']">Name of event is required!</div>
         </div>
       </div>
 
@@ -34,8 +34,8 @@
           required
           #description="ngModel"
         />
-        <div class="alert-danger" *ngIf="description.errors && f.submitted">
-          <div *ngIf="description.errors['required']">Description is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="description.errors && f.submitted">
+          <div *ngIf="description.errors['required']">Description is required!</div>
         </div>
       </div>
 
@@ -46,25 +46,9 @@
                  required #date="ngModel"/>
         </div>
       </div>
-      <div class="alert-danger" *ngIf="date.errors && f.submitted">
-        <div *ngIf="date.errors['required']">Date of event is required</div>
+      <div class="alert alert-danger" role="alert" *ngIf="date.errors && f.submitted">
+        <div *ngIf="date.errors['required']">Date of event is required!</div>
       </div>
-
-<!--      <div class="form-group">-->
-<!--        <label for="status">Status</label>-->
-<!--        <input-->
-<!--          id="status"-->
-<!--          type="text"-->
-<!--          class="form-control"-->
-<!--          name="status"-->
-<!--          [(ngModel)]="eventData.status"-->
-<!--          required-->
-<!--          #status="ngModel"-->
-<!--        />-->
-<!--        <div class="alert-danger" *ngIf="status.errors && f.submitted">-->
-<!--          <div *ngIf="status.errors['required']">Status is required</div>-->
-<!--        </div>-->
-<!--      </div>-->
 
       <div class="form-group">
         <label for="city">City</label>
@@ -77,8 +61,8 @@
           required
           #city="ngModel"
         />
-        <div class="alert-danger" *ngIf="city.errors && f.submitted">
-          <div *ngIf="city.errors['required']">City is required todo</div>
+        <div class="alert alert-danger" role="alert" *ngIf="city.errors && f.submitted">
+          <div *ngIf="city.errors['required']">City is required!</div>
         </div>
       </div>
 
@@ -93,8 +77,8 @@
           required
           #address="ngModel"
         />
-        <div class="alert-danger" *ngIf="address.errors && f.submitted">
-          <div *ngIf="address.errors['required']">Address is required todo</div>
+        <div class="alert alert-danger" role="alert" *ngIf="address.errors && f.submitted">
+          <div *ngIf="address.errors['required']">Address is required!</div>
         </div>
       </div>
 
@@ -127,8 +111,8 @@
           required
           #minUsers="ngModel"
         />
-        <div class="alert-danger" *ngIf="minUsers.errors && f.submitted">
-          <div *ngIf="minUsers.errors['required']">Minimum number of users is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="minUsers.errors && f.submitted">
+          <div *ngIf="minUsers.errors['required']">Minimum number of users is required!</div>
         </div>
       </div>
 
@@ -143,8 +127,8 @@
           required
           #maxUsers="ngModel"
         />
-        <div class="alert-danger" *ngIf="maxUsers.errors && f.submitted">
-          <div *ngIf="maxUsers.errors['required']">Maximum number of users is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="maxUsers.errors && f.submitted">
+          <div *ngIf="maxUsers.errors['required']">Maximum number of users is required!</div>
         </div>
       </div>
 
@@ -159,8 +143,8 @@
           required
           #suggestedAge="ngModel"
         />
-        <div class="alert-danger" *ngIf="suggestedAge.errors && f.submitted">
-          <div *ngIf="suggestedAge.errors['required']">Suggested age of event attendee is required</div>
+        <div class="alert alert-danger" role="alert" *ngIf="suggestedAge.errors && f.submitted">
+          <div *ngIf="suggestedAge.errors['required']">Suggested age of event attendee is required!</div>
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from "../../_services/event.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {TokenStorageService} from "../../_services/token-storage.service";
 
 @Component({
   selector: 'app-edit-event',
@@ -14,22 +15,24 @@ export class EditEventComponent implements OnInit {
     eventName: null,
     description: null,
     date: null,
-    status: null, //enum todo?
-    city: null, //todo!!!!
+    status: null,
+    city: null,
     address: null,
     isPrivate: false,
     isReserved: false,
     minUsers: null,
     maxUsers: null,
     suggestedAge: null,
-    photo: null
+    photo: null,
+    creatorId: null
   };
 
   isSuccessful = false;
   isEditingEventFailed = false;
   errorMessage = '';
+  isDateNull = false;
 
-  constructor(private route: ActivatedRoute, private eventService: EventService, private router: Router) {
+  constructor(private route: ActivatedRoute, private eventService: EventService, private router: Router, private tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
@@ -39,8 +42,10 @@ export class EditEventComponent implements OnInit {
     });
   }
 
+
   getEventData(eventId: number) {
     this.eventService.getEvent(eventId).subscribe(eventData => {
+      this.eventData.creatorId = eventData.user_id;
       this.eventData.eventName = eventData.name;
       this.eventData.description = eventData.description;
       this.eventData.isReserved = eventData.is_reserved;
@@ -51,7 +56,16 @@ export class EditEventComponent implements OnInit {
       this.eventData.date = eventData.date;
       this.eventData.city = eventData.city;
       this.eventData.address = eventData.address;
+
+      if (!this.isCreatorOfEvent()) {
+        window.location.href = "/notallowed";
+      }
     });
+  }
+
+
+  isCreatorOfEvent(): boolean {
+    return this.eventData.creatorId === this.tokenStorageService.getUserId() ? true : false;
   }
 
   handleFileInput(event) {
@@ -63,7 +77,10 @@ export class EditEventComponent implements OnInit {
       next: data => {
         this.isSuccessful = true;
         this.isEditingEventFailed = false;
-        //todo redirect
+        setTimeout(
+          function () {
+            window.location.href = "/events";
+          }, 2500);
       },
       error: err => {
         this.errorMessage = err.error.message;
@@ -83,10 +100,15 @@ export class EditEventComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.eventData.photo) {
-      this.updateEventDataAndPhoto();
+    if (this.eventData.date === null || this.eventData.date === '') {
+      this.isDateNull = true;
     } else {
-      this.updateEventData();
+      this.isDateNull = false;
+      if (this.eventData.photo) {
+        this.updateEventDataAndPhoto();
+      } else {
+        this.updateEventData();
+      }
     }
   }
 

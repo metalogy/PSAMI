@@ -2,6 +2,9 @@ import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_services/user.service";
 import {AuthService} from "../../_services/auth.service";
+import {AppComponent} from "../../app.component";
+import {Token} from "@angular/compiler";
+import {TokenStorageService} from "../../_services/token-storage.service";
 
 @Component({
   selector: 'app-edit-profile',
@@ -42,10 +45,12 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   showMarker = false;
   cityNotSelected = false;
   id: number;
+  isAgeNull = false;
 
   geocoder = new google.maps.Geocoder();
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private ngZone: NgZone, private userService: UserService, private router: Router) {
+  constructor(private route: ActivatedRoute, private authService: AuthService, private ngZone: NgZone, private userService: UserService,
+              private router: Router, private app: AppComponent, private tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
@@ -58,13 +63,21 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
 
   getUserData(id: number): void {
     this.userService.getProfile(id).subscribe(userData => {
+      this.userData.id = userData.id;
       this.userData.username = userData.username;
       this.userData.first_name = userData.first_name;
       this.userData.last_name = userData.last_name;
       this.userData.email = userData.email;
-      this.userData.password = userData.password;
       this.userData.age = userData.age;
+
+      if (!this.isCreatorOfEvent()) {
+        window.location.href = "/notallowed";
+      }
     })
+  }
+
+  isCreatorOfEvent(): boolean {
+    return this.userData.id === this.tokenStorageService.getUserId() ? true : false;
   }
 
   ngAfterViewInit(): void {
@@ -106,8 +119,13 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   updateUserData() {
     this.userService.updateProfile(this.id, this.userData).subscribe(response => {
       if (response.username) {
-        this.isSuccessful = true; //todo redirect i logout
+        this.isSuccessful = true;
         this.isSignUpFailed = false;
+        let that = this;
+        setTimeout(
+          function () {
+            that.app.logout();
+          }, 2500);
       } else {
         this.errorMessage = response;
         this.isSignUpFailed = true;
@@ -126,14 +144,19 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    if (this.userData.city) {
-      if (this.userData.avatar) {
-        this.updatePhotoAndUserData();
-      } else {
-        this.updateUserData();
-      }
+    if (this.userData.age === null || this.userData.age === '') {
+      this.isAgeNull = true;
     } else {
-      this.cityNotSelected = true;
+      this.isAgeNull = false;
+      if (this.userData.city) {
+        if (this.userData.avatar) {
+          this.updatePhotoAndUserData();
+        } else {
+          this.updateUserData();
+        }
+      } else {
+        this.cityNotSelected = true;
+      }
     }
   }
 

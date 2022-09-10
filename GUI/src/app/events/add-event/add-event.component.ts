@@ -12,8 +12,8 @@ export class AddEventComponent implements OnInit {
     eventName: null,
     description: null,
     date: null,
-    status: null, //enum todo?
-    city: null, //todo!!!!
+    status: null,
+    city: null,
     address: null,
     isPrivate: false,
     isReserved: false,
@@ -37,7 +37,11 @@ export class AddEventComponent implements OnInit {
     let response = this.eventService.addEvent(this.eventData);
     if (response.includes('created_at')) {
       this.isSuccessful = true;
-      this.isAddingEventFailed = false; //todo redirect
+      this.isAddingEventFailed = false;
+      setTimeout(
+        function () {
+          window.location.href = "/events";
+        }, 2500);
     } else {
       this.errorMessage = response;
       this.isAddingEventFailed = true;
