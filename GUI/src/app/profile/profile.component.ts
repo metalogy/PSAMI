@@ -98,7 +98,7 @@ export class ProfileComponent implements OnInit {
       this.commentErrorVisible = true;
     } else {
       this.commentErrorVisible = false;
-      this.userService.saveProfileComments(this.tokenStorageService.getUserId(), comment).subscribe(value => {
+      this.userService.saveProfileComments(this.profileId, comment).subscribe(value => {
         this.getProfileComments(this.profileId);
       });
       this.commentInput = '';
